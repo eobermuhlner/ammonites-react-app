@@ -1,0 +1,41 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+}
+
+th, td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+label {
+    margin-right: 10px;
+    display: inline-block;
+    min-width: 120px; /* Ensures alignment of inputs */
+}
+
+input {
+    padding: 8px;
+    width: 200px; /* Adjust width as necessary */
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Optional: Enhance the visual appeal */
+input, button {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
