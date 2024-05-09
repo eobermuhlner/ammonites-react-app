@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ImageViewerComponent from './ImageViewerComponent';
 import './App.css';
 import './AmmoniteSearch.css';
 
@@ -92,6 +93,7 @@ function AmmoniteSearch() {
                         <th>Strata</th>
                         <th>Description</th>
                         <th>Comment</th>
+                        <th>Image</th>
                         <th>Diameter Side</th>
                         <th>Diameter Cross</th>
                         <th>N</th>
@@ -99,6 +101,7 @@ function AmmoniteSearch() {
                         <th>B</th>
                         <th>Q</th>
                         <th>Z</th>
+                        <th>Measurement Image</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,6 +122,7 @@ function AmmoniteSearch() {
                             <td>{result.ammonite.strata}</td>
                             <td>{result.ammonite.description}</td>
                             <td>{result.ammonite.comment}</td>
+                            <td><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></td>
                             <td>{result.measurement.diameterSide}</td>
                             <td>{result.measurement.diameterCross}</td>
                             <td>{result.measurement.proportionN}</td>
@@ -126,6 +130,7 @@ function AmmoniteSearch() {
                             <td>{result.measurement.proportionB}</td>
                             <td>{result.measurement.proportionQ}</td>
                             <td>{result.measurement.countZ}</td>
+                            <td><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></td>
                         </tr>
                     ))}
                 </tbody>

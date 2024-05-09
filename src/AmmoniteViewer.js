@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import ImageViewerComponent from './ImageViewerComponent';
 import './App.css';
 
 function AmmoniteViewer() {
@@ -54,6 +55,10 @@ function AmmoniteViewer() {
             <tr>
               <th>Comment</th>
               <td>{ammonite.comment}</td>
+            </tr>
+            <tr>
+              <th>Image</th>
+              <td><ImageViewerComponent imageId={ammonite.imageId} width={200} height={200} /></td>
             </tr>
           </table>
         </div>

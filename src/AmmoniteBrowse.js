@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchAllAmmonites } from './api';
+import ImageViewerComponent from './ImageViewerComponent';
 
 function AmmoniteBrowse() {
   const [data, setData] = useState([]);
@@ -69,6 +70,7 @@ function AmmoniteBrowse() {
             <th>Strata</th>
             <th>Description</th>
             <th>Comment</th>
+            <th>Image</th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +90,7 @@ function AmmoniteBrowse() {
               <td>{item.strata}</td>
               <td>{item.description}</td>
               <td>{item.comment}</td>
+              <td><ImageViewerComponent imageId={item.imageId} width={100} height={100} /></td>
             </tr>
           ))}
         </tbody>
