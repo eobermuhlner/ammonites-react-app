@@ -67,8 +67,9 @@ const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpd
   };
 
   const imageStyles = {
-    width: width ? `${width}px` : 'auto',
-    height: height ? `${height}px` : 'auto',
+    maxWidth: width ? `${width}px` : 'auto',
+    maxHeight: height ? `${height}px` : 'auto',
+    objectFit: 'contain',
     cursor: 'pointer'
   };
 
