@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ImageViewerComponent from './ImageViewerComponent';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './AmmoniteSearch.css';
 
@@ -36,6 +37,7 @@ function AmmoniteSearch() {
             const response = await axios.get(`http://localhost:8080/api/ammonites/matching`, {
                 params: filters
             });
+            console.log(response.data)
             setResults(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -84,6 +86,7 @@ function AmmoniteSearch() {
                     <tr>
                         <th>Match</th>
                         <th></th>
+                        <th>Id</th>
                         <th>Subclass</th>
                         <th>Family</th>
                         <th>Subfamily</th>
@@ -113,6 +116,7 @@ function AmmoniteSearch() {
                                     <button>View</button>
                                 </Link>
                             </td>
+                            <td>{result.ammonite.id}</td>
                             <td>{result.ammonite.taxonomySubclass}</td>
                             <td>{result.ammonite.taxonomyFamily}</td>
                             <td>{result.ammonite.taxonomySubfamily}</td>

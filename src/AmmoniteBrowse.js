@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchAllAmmonites } from './api';
 import ImageViewerComponent from './ImageViewerComponent';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function AmmoniteBrowse() {
   const [data, setData] = useState([]);
@@ -61,6 +63,7 @@ function AmmoniteBrowse() {
         <thead>
           <tr>
             <th></th>
+            <th>Id</th>
             <th>Subclass</th>
             <th>Family</th>
             <th>Subfamily</th>
@@ -81,6 +84,7 @@ function AmmoniteBrowse() {
                     <button>View</button>
                 </Link>
             </td>
+              <td>{item.id}</td>
               <td>{item.taxonomySubclass}</td>
               <td>{item.taxonomyFamily}</td>
               <td>{item.taxonomySubfamily}</td>
