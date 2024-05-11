@@ -18,7 +18,7 @@ const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpd
         })
         .catch(err => console.error('Error fetching image:', err));
     }
-  }, [imageId]);
+  }, [imageId, imageSrc]);
 
   const handleImageClick = () => {
     setIsModalOpen(true);
@@ -73,44 +73,44 @@ const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpd
     cursor: 'pointer'
   };
 
-  return (
-    <div>
-      <img src={imageSrc} alt="No image" style={imageStyles} onClick={handleImageClick} />
-      {isModalOpen && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000
-        }} onClick={handleCloseModal}>
-          <div onClick={(e) => e.stopPropagation()}> {/* Stop propagation to prevent modal from closing */}
-            <img src={imageSrc} alt="Full size" style={{
-              maxWidth: '90%',
-              maxHeight: '90%',
-              margin: 'auto',
-              display: 'block',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
-            }} />
-            {editMode ? (
-              <>
-                <input type="file" onChange={handleFileChange} />
-                <button onClick={handleSaveImage}>Save</button>
-                <button onClick={() => setEditMode(false)}>Cancel</button>
-              </>
-            ) : isEditable && (
-              <button onClick={handleEditClick}>Edit Image</button>
-            )}
+    return (
+      <div>
+        <img src={imageSrc} alt="" style={imageStyles} onClick={handleImageClick} />
+        {isModalOpen && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000
+          }} onClick={handleCloseModal}>
+            <div onClick={(e) => e.stopPropagation()}> {/* Stop propagation to prevent modal from closing */}
+              <img src={imageSrc} alt="Full size" style={{
+                maxWidth: '90vw', // 90% of viewport width
+                maxHeight: '90vh', // 90% of viewport height
+                margin: 'auto',
+                display: 'block',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+              }} />
+              {editMode ? (
+                <>
+                  <input type="file" onChange={handleFileChange} />
+                  <button onClick={handleSaveImage}>Save</button>
+                  <button onClick={() => setEditMode(false)}>Cancel</button>
+                </>
+              ) : isEditable && (
+                <button onClick={handleEditClick}>Edit Image</button>
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-};
+        )}
+      </div>
+    );
+}
 
 export default ImageViewerComponent;
