@@ -3,8 +3,9 @@ import React, { useState, useRef, useEffect } from 'react';
 function ImageMeasure({ imageUrl }) {
   const imgRef = useRef(null);
   const svgRef = useRef(null);
-  const [center, setCenter] = useState({ cx: 150, cy: 150 });
+  const [center, setCenter] = useState({ cx: 200, cy: 200 });
   const [endpoint, setEndpoint] = useState({ ex: 300, ey: 300 });
+  const [p1, setP1] = useState(0.8);
   const [radius, setRadius] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [draggingPoint, setDraggingPoint] = useState(null);
@@ -15,6 +16,8 @@ function ImageMeasure({ imageUrl }) {
     const newRadius = Math.sqrt(dx * dx + dy * dy);
     setRadius(newRadius);
   }, [center, endpoint]);
+
+  const adjustPoints = (t) => ({ x: center.cx + t * (endpoint.ex - center.cx), y: center.cy + t * (endpoint.ey - center.cy) });
 
   const handleMouseDown = (point) => (event) => {
     setDraggingPoint(point);
@@ -30,6 +33,13 @@ function ImageMeasure({ imageUrl }) {
       setCenter({ cx: newX, cy: newY });
     } else if (draggingPoint.type === 'endpoint') {
       setEndpoint({ ex: newX, ey: newY });
+    } else if (draggingPoint.type === 'p1') {
+      const dx = newX - center.cx;
+      const dy = newY - center.cy;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const radius = Math.sqrt((endpoint.ex - center.cx) ** 2 + (endpoint.ey - center.cy) ** 2);
+      const newP1 = distance / radius;
+      setP1(newP1);
     }
   };
 
@@ -38,8 +48,9 @@ function ImageMeasure({ imageUrl }) {
     setDraggingPoint(null);
   };
 
-  const otherx = center.cx - (endpoint.ex - center.cx)
-  const othery = center.cy - (endpoint.ey - center.cy)
+  const otherx = center.cx - (endpoint.ex - center.cx);
+  const othery = center.cy - (endpoint.ey - center.cy);
+  const p1Position = adjustPoints(p1);
   return (
     <div style={{ maxWidth: '90%', maxHeight: '90%', position: 'relative' }}
          onMouseMove={handleMouseMove}
@@ -50,6 +61,8 @@ function ImageMeasure({ imageUrl }) {
         <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
         <circle cx={center.cx} cy={center.cy} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'center'})} />
+        <circle cx={p1Position.x} cy={p1Position.y} r="5" fill="yellow"
+                onMouseDown={handleMouseDown({type: 'p1', func: setP1})} />
         <circle cx={endpoint.ex} cy={endpoint.ey} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'endpoint'})} />
       </svg>
