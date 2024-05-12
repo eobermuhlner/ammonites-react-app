@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ImageViewerComponent from './ImageViewerComponent';
+import ImageMeasure from './ImageMeasure';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './AmmoniteSearch.css';
 
 function DistanceAsMatchPercentage({ x }) {
-  const percentage = (1.0 - x) * 100;
-
-  return <div>{percentage.toFixed(2)}%</div>;
+    const percentage = (1.0 - x) * 100;
+    return <div>{percentage.toFixed(3)}%</div>;
 }
 
 function AmmoniteSearch() {
@@ -23,6 +23,7 @@ function AmmoniteSearch() {
         countZ: ''
     });
     const [results, setResults] = useState([]);
+    const [imageUrl, setImageUrl] = useState('');
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -33,11 +34,11 @@ function AmmoniteSearch() {
     };
 
     const handleSearch = async () => {
+        setResults([]);
         try {
             const response = await axios.get(`http://localhost:8080/api/ammonites/matching`, {
                 params: filters
             });
-            console.log(response.data)
             setResults(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -45,42 +46,61 @@ function AmmoniteSearch() {
         }
     };
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImageUrl(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <div>
             <h1>Ammonite Search</h1>
-                <div>
+            <div className="row">
+                <div className="col-md-6">
+                    <input type="file" onChange={handleImageChange} />
+                    {imageUrl && <ImageMeasure imageUrl={imageUrl} />}
+                </div>
+                <div className="col-md-6">
                     <div>
-                        <label htmlFor="diameterSide">Diameter Side:</label>
-                        <input type="text" name="diameterSide" placeholder="Diameter Side" value={filters.diameterSide} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="diameterCross">Diameter Cross:</label>
-                        <input type="text" name="diameterCross" placeholder="Diameter Cross" value={filters.diameterCross} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="proportionN">Proportion N:</label>
-                        <input type="text" name="proportionN" placeholder="Proportion N" value={filters.proportionN} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="proportionH">Proportion H:</label>
-                        <input type="text" name="proportionH" placeholder="Proportion H" value={filters.proportionH} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="proportionB">Proportion B:</label>
-                        <input type="text" name="proportionB" placeholder="Proportion B" value={filters.proportionB} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="proportionQ">Proportion Q:</label>
-                        <input type="text" name="proportionQ" placeholder="Proportion Q" value={filters.proportionQ} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <label htmlFor="countZ">Count Z:</label>
-                        <input type="text" name="countZ" placeholder="Count Z" value={filters.countZ} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                        <button onClick={handleSearch}>Search</button>
+                        <div>
+                            <label htmlFor="diameterSide">Diameter Side:</label>
+                            <input type="text" name="diameterSide" placeholder="Diameter Side" value={filters.diameterSide} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="diameterCross">Diameter Cross:</label>
+                            <input type="text" name="diameterCross" placeholder="Diameter Cross" value={filters.diameterCross} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="proportionN">Proportion N:</label>
+                            <input type="text" name="proportionN" placeholder="Proportion N" value={filters.proportionN} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="proportionH">Proportion H:</label>
+                            <input type="text" name="proportionH" placeholder="Proportion H" value={filters.proportionH} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="proportionB">Proportion B:</label>
+                            <input type="text" name="proportionB" placeholder="Proportion B" value={filters.proportionB} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="proportionQ">Proportion Q:</label>
+                            <input type="text" name="proportionQ" placeholder="Proportion Q" value={filters.proportionQ} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="countZ">Count Z:</label>
+                            <input type="text" name="countZ" placeholder="Count Z" value={filters.countZ} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <button onClick={handleSearch}>Search</button>
+                        </div>
                     </div>
                 </div>
+            </div>
             <table>
                 <thead>
                     <tr>
