@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ImageViewerComponent from './ImageViewerComponent';
@@ -24,6 +24,25 @@ function AmmoniteSearch() {
     });
     const [results, setResults] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+
+    useEffect(() => {
+        if (filters.diameterSide && filters.diameterCross) {
+            const newProportionB = parseFloat(filters.diameterCross) / parseFloat(filters.diameterSide);
+            setFilters(prevState => ({
+                ...prevState,
+                proportionB: newProportionB.toFixed(1)
+            }));
+        }
+    }, [filters.diameterSide, filters.diameterCross]);
+    useEffect(() => {
+        if (filters.diameterSide && filters.diameterCross) {
+            const newProportionQ = parseFloat(filters.proportionH) / parseFloat(filters.proportionB);
+            setFilters(prevState => ({
+                ...prevState,
+                proportionQ: newProportionQ.toFixed(1)
+            }));
+        }
+    }, [filters.proportionH, filters.proportionB]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -57,13 +76,27 @@ function AmmoniteSearch() {
         }
     };
 
+    const handleUpdateN = (newN) => {
+        setFilters(prevState => ({
+            ...prevState,
+            ['proportionN']: newN
+        }));
+    };
+
+    const handleUpdateH = (newH) => {
+        setFilters(prevState => ({
+            ...prevState,
+            ['proportionH']: newH
+        }));
+    };
+
     return (
         <div>
             <h1>Ammonite Search</h1>
             <div className="row">
                 <div className="col-md-6">
                     <input type="file" onChange={handleImageChange} />
-                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} />}
+                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
                 </div>
                 <div className="col-md-6">
                     <div>

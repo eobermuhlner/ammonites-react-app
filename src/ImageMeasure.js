@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function ImageMeasure({ imageUrl, width, height }) {
+function ImageMeasure({ imageUrl, width, height, onUpdateN, onUpdateH }) {
   const imgRef = useRef(null);
   const svgRef = useRef(null);
   const [center, setCenter] = useState({ cx: 200, cy: 200 });
@@ -12,12 +12,27 @@ function ImageMeasure({ imageUrl, width, height }) {
   const [radius, setRadius] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [draggingPoint, setDraggingPoint] = useState(null);
+  const [N, setN] = useState(0);
+  const [H, setH] = useState(0);
 
   useEffect(() => {
     const dx = endpoint.ex - center.cx;
     const dy = endpoint.ey - center.cy;
     setRadius(Math.sqrt(dx * dx + dy * dy));
   }, [center, endpoint]);
+
+  useEffect(() => {
+    if (p1 !== 0 && p1 !== 1) {
+      setN(((p2 - p3) / (1.0 - p1) * 100).toFixed(1));
+      setH(((1.0 - p2) / (1.0 - p1) * 100).toFixed(1));
+      if (onUpdateN) {
+        onUpdateN(N)
+      }
+      if (onUpdateH) {
+        onUpdateH(H)
+      }
+    }
+  }, [p1, p2, p3]);
 
   const adjustPoints = (t) => ({ x: center.cx + t * (endpoint.ex - center.cx), y: center.cy + t * (endpoint.ey - center.cy) });
 
@@ -124,8 +139,6 @@ function ImageMeasure({ imageUrl, width, height }) {
         <circle cx={pRibPosition.x} cy={pRibPosition.y} r="5" fill="purple"
                 onMouseDown={handleMouseDown({type: 'pRib', func: setPRib})} />
       </svg>
-      <div>N: {((p2-p3)/(1.0-p1)*100).toFixed(1)}</div>
-      <div>H: {((1.0-p2)/(1.0-p1)*100).toFixed(1)}</div>
     </div>
   );
 }
