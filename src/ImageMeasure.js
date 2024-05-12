@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function ImageMeasure({ imageUrl }) {
+function ImageMeasure({ imageUrl, width, height }) {
   const imgRef = useRef(null);
   const svgRef = useRef(null);
   const [center, setCenter] = useState({ cx: 200, cy: 200 });
   const [endpoint, setEndpoint] = useState({ ex: 300, ey: 300 });
-  const [p1, setP1] = useState(0.8);
+  const [p1, setP1] = useState(-0.7);
+  const [p2, setP2] = useState(0.4);
+  const [p3, setP3] = useState(-0.2);
+  const [pRib, setPRib] = useState(0.6);
   const [radius, setRadius] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [draggingPoint, setDraggingPoint] = useState(null);
@@ -13,8 +16,7 @@ function ImageMeasure({ imageUrl }) {
   useEffect(() => {
     const dx = endpoint.ex - center.cx;
     const dy = endpoint.ey - center.cy;
-    const newRadius = Math.sqrt(dx * dx + dy * dy);
-    setRadius(newRadius);
+    setRadius(Math.sqrt(dx * dx + dy * dy));
   }, [center, endpoint]);
 
   const adjustPoints = (t) => ({ x: center.cx + t * (endpoint.ex - center.cx), y: center.cy + t * (endpoint.ey - center.cy) });
@@ -22,6 +24,14 @@ function ImageMeasure({ imageUrl }) {
   const handleMouseDown = (point) => (event) => {
     setDraggingPoint(point);
     setIsDragging(true);
+  };
+
+  const calculateDiameterPoint = (newX, newY, center, endpoint) => {
+    const dx = newX - center.cx;
+    const dy = newY - center.cy;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const radius = Math.sqrt((endpoint.ex - center.cx) ** 2 + (endpoint.ey - center.cy) ** 2);
+    return distance / radius;
   };
 
   const handleMouseMove = (event) => {
@@ -34,12 +44,13 @@ function ImageMeasure({ imageUrl }) {
     } else if (draggingPoint.type === 'endpoint') {
       setEndpoint({ ex: newX, ey: newY });
     } else if (draggingPoint.type === 'p1') {
-      const dx = newX - center.cx;
-      const dy = newY - center.cy;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const radius = Math.sqrt((endpoint.ex - center.cx) ** 2 + (endpoint.ey - center.cy) ** 2);
-      const newP1 = distance / radius;
-      setP1(newP1);
+      setP1(-calculateDiameterPoint(newX, newY, center, endpoint));
+    } else if (draggingPoint.type === 'p2') {
+      setP2(calculateDiameterPoint(newX, newY, center, endpoint));
+    } else if (draggingPoint.type === 'p3') {
+      setP3(-calculateDiameterPoint(newX, newY, center, endpoint));
+    } else if (draggingPoint.type === 'pRib') {
+      setPRib(calculateDiameterPoint(newX, newY, center, endpoint));
     }
   };
 
@@ -48,27 +59,94 @@ function ImageMeasure({ imageUrl }) {
     setDraggingPoint(null);
   };
 
+  const renderPurpleLines = (n, center, endpoint, radius) => {
+    const deltaX = endpoint.ex - center.cx;
+    const deltaY = endpoint.ey - center.cy;
+    const initialAngle = Math.atan2(deltaY, deltaX);
+
+    const angleIncrement = (2 * Math.PI) / n;  // Full circle divided by the number of lines
+    let lines = [];
+
+    for (let i = 0; i < n; i++) {
+
+      const angle = initialAngle + angleIncrement * i;
+      const lineEndX = center.cx + radius * Math.cos(angle);
+      const lineEndY = center.cy + radius * Math.sin(angle);
+
+      lines.push(
+        <line
+          x1={center.cx}
+          y1={center.cy}
+          x2={lineEndX}
+          y2={lineEndY}
+          stroke="purple"
+          strokeWidth="1"
+        />
+      );
+    }
+    return lines;
+  };
+
+  const imageStyles = {
+    maxWidth: width ? `${width}px` : 'auto',
+    maxHeight: height ? `${height}px` : 'auto',
+    objectFit: 'contain',
+    cursor: 'pointer'
+  };
+
   const otherx = center.cx - (endpoint.ex - center.cx);
   const othery = center.cy - (endpoint.ey - center.cy);
   const p1Position = adjustPoints(p1);
+  const p2Position = adjustPoints(p2);
+  const p3Position = adjustPoints(p3);
+  const pRibPosition = adjustPoints(pRib);
+
   return (
     <div style={{ maxWidth: '90%', maxHeight: '90%', position: 'relative' }}
          onMouseMove={handleMouseMove}
          onMouseUp={handleMouseUp}>
-      <img ref={imgRef} src={imageUrl} style={{ width: '100%', height: 'auto' }} alt="Measured" />
+      <img ref={imgRef} src={imageUrl} style={imageStyles} alt="Measure" />
       <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         <circle cx={center.cx} cy={center.cy} r={radius} stroke="green" strokeWidth="2" fill="transparent" />
+        <circle cx={center.cx} cy={center.cy} r={radius*pRib} stroke="purple" strokeWidth="2" fill="transparent" />
+        {renderPurpleLines(42, center, endpoint, radius)}
         <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
         <circle cx={center.cx} cy={center.cy} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'center'})} />
-        <circle cx={p1Position.x} cy={p1Position.y} r="5" fill="yellow"
-                onMouseDown={handleMouseDown({type: 'p1', func: setP1})} />
         <circle cx={endpoint.ex} cy={endpoint.ey} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'endpoint'})} />
+        <circle cx={p1Position.x} cy={p1Position.y} r="5" fill="red"
+                onMouseDown={handleMouseDown({type: 'p1', func: setP1})} />
+        <circle cx={p2Position.x} cy={p2Position.y} r="5" fill="yellow"
+                onMouseDown={handleMouseDown({type: 'p2', func: setP2})} />
+        <circle cx={p3Position.x} cy={p3Position.y} r="5" fill="yellow"
+                onMouseDown={handleMouseDown({type: 'p3', func: setP3})} />
+        <circle cx={pRibPosition.x} cy={pRibPosition.y} r="5" fill="purple"
+                onMouseDown={handleMouseDown({type: 'pRib', func: setPRib})} />
       </svg>
-      <div>Radius: {radius.toFixed(2)} pixels</div>
+      <div>N: {((p2-p3)/(1.0-p1)*100).toFixed(1)}</div>
+      <div>H: {((1.0-p2)/(1.0-p1)*100).toFixed(1)}</div>
     </div>
   );
 }
+
+//  // Calculate points for the spiral
+//  const numPoints = 1000; // Number of points to draw the spiral
+//  const anglePoints = 350
+//  const spiralPoints = [];
+//  let angleOffset = Math.atan2(endpoint.ey - center.cy, endpoint.ex - center.cx);
+//  let startRadius = radius * 0.01; // Smaller starting radius for visibility
+//
+//  for (let i = 0; i < numPoints; i++) {
+//    let angle = angleOffset + (i / anglePoints) * (Math.PI * 4); // Full spiral rotations
+//    let r = startRadius * Math.exp(0.0047 * i); // Adjust 0.1 for tighter or looser spiral
+//    let x = center.cx + r * Math.cos(angle);
+//    let y = center.cy + r * Math.sin(angle);
+//    spiralPoints.push(`${x},${y}`);
+//  }
+//
+//
+//        <polyline points={spiralPoints.join(' ')} fill="none" stroke="purple" strokeWidth="2" />
+
 
 export default ImageMeasure;
