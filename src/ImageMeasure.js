@@ -32,7 +32,7 @@ function ImageMeasure({ imageUrl, width, height, onUpdateN, onUpdateH }) {
         onUpdateH(H)
       }
     }
-  }, [p1, p2, p3]);
+  }, [p1, p2, p3, N, H, onUpdateN, onUpdateH]);
 
   const adjustPoints = (t) => ({ x: center.cx + t * (endpoint.ex - center.cx), y: center.cy + t * (endpoint.ey - center.cy) });
 

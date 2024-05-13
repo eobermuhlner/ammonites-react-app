@@ -35,7 +35,7 @@ function AmmoniteSearch() {
         }
     }, [filters.diameterSide, filters.diameterCross]);
     useEffect(() => {
-        if (filters.diameterSide && filters.diameterCross) {
+        if (filters.proportionH && filters.proportionB) {
             const newProportionQ = parseFloat(filters.proportionH) / parseFloat(filters.proportionB);
             setFilters(prevState => ({
                 ...prevState,
@@ -79,14 +79,14 @@ function AmmoniteSearch() {
     const handleUpdateN = (newN) => {
         setFilters(prevState => ({
             ...prevState,
-            ['proportionN']: newN
+            proportionN: newN
         }));
     };
 
     const handleUpdateH = (newH) => {
         setFilters(prevState => ({
             ...prevState,
-            ['proportionH']: newH
+            proportionH: newH
         }));
     };
 
