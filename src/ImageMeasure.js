@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function ImageMeasure({ imageUrl, width, height, onUpdateN, onUpdateH }) {
+function ImageMeasure({ imageUrl, width, height, countZ, onUpdateN, onUpdateH }) {
   const imgRef = useRef(null);
   const svgRef = useRef(null);
   const [center, setCenter] = useState({ cx: 200, cy: 200 });
@@ -124,7 +124,7 @@ function ImageMeasure({ imageUrl, width, height, onUpdateN, onUpdateH }) {
       <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         <circle cx={center.cx} cy={center.cy} r={radius} stroke="green" strokeWidth="2" fill="transparent" />
         <circle cx={center.cx} cy={center.cy} r={radius*pRib} stroke="purple" strokeWidth="2" fill="transparent" />
-        {renderPurpleLines(42, center, endpoint, radius)}
+        {renderPurpleLines(countZ, center, endpoint, radius)}
         <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
         <circle cx={center.cx} cy={center.cy} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'center'})} />
