@@ -18,7 +18,7 @@ const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpd
         })
         .catch(err => console.error('Error fetching image:', err));
     }
-  }, [imageId, imageSrc]);
+  }, [imageId]);
 
   const handleImageClick = () => {
     setIsModalOpen(true);
