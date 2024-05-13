@@ -96,7 +96,7 @@ function AmmoniteSearch() {
             <div className="row">
                 <div className="col-md-6">
                     <input type="file" onChange={handleImageChange} />
-                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
+                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} countZ={filters.countZ} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
                 </div>
                 <div className="col-md-6">
                     <div>
