@@ -22,7 +22,8 @@ function AmmoniteSearch() {
         proportionQ: '',
         countPrimaryRibs: '',
         countSecondaryRibs: '',
-        ribDivisionRatio: ''
+        ribDivisionRatio: '',
+        turns: ''
     });
     const [results, setResults] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
@@ -119,7 +120,7 @@ function AmmoniteSearch() {
             <div className="row">
                 <div className="col-md-6">
                     <input type="file" onChange={handleImageChange} />
-                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} countPrimaryRibs={filters.countPrimaryRibs} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
+                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} countPrimaryRibs={filters.countPrimaryRibs} turns={filters.turns} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
                 </div>
                 <div className="col-md-6">
                     <div>
@@ -149,15 +150,19 @@ function AmmoniteSearch() {
                         </div>
                         <div>
                             <label htmlFor="countPrimaryRibs">Count Primary Ribs:</label>
-                            <input type="text" name="countPrimaryRibs" placeholder="Count Primary Ribs" value={filters.countPrimaryRibs} onChange={handleInputChange} />
+                            <input type="text" name="countPrimaryRibs" placeholder="Primary Ribs" value={filters.countPrimaryRibs} onChange={handleInputChange} />
                         </div>
                         <div>
                             <label htmlFor="countSecondaryRibs">Count Secondary Ribs:</label>
-                            <input type="text" name="countSecondaryRibs" placeholder="Count Secondary Ribs" value={filters.countSecondaryRibs} onChange={handleInputChange} />
+                            <input type="text" name="countSecondaryRibs" placeholder="Secondary Ribs" value={filters.countSecondaryRibs} onChange={handleInputChange} />
                         </div>
                         <div>
                             <label htmlFor="ribDivisionRatio">Rib Division Ratio:</label>
                             <input type="text" name="ribDivisionRatio" placeholder="Rib Division Ratio" value={filters.ribDivisionRatio} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="turns">Turns:</label>
+                            <input type="text" name="turns" placeholder="Turns" value={filters.turns} onChange={handleInputChange} />
                         </div>
                         <div>
                             <button onClick={handleSearch}>Search</button>

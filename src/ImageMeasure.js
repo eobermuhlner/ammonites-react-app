@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, onUpdateN, onUpdateH }) {
+function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, turns, onUpdateN, onUpdateH }) {
   const imgRef = useRef(null);
   const svgRef = useRef(null);
   const [center, setCenter] = useState({ cx: 200, cy: 200 });
@@ -79,7 +79,7 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, onUpdateN, on
     const deltaY = endpoint.ey - center.cy;
     const initialAngle = Math.atan2(deltaY, deltaX);
 
-    const angleIncrement = (2 * Math.PI) / n;  // Full circle divided by the number of lines
+    const angleIncrement = (2 * Math.PI) / n;
     let lines = [];
 
     for (let i = 0; i < n; i++) {
@@ -116,6 +116,29 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, onUpdateN, on
   const p3Position = adjustPoints(p3);
   const pRibPosition = adjustPoints(pRib);
 
+  // Calculate points for the spiral
+  const turnCount = turns;
+  const numPoints = 300;
+  const spiralPoints = [];
+  let startAngle = 0;
+
+  let dx = endpoint.ex - center.cx;
+  let dy = endpoint.ey - center.cy;
+  let endpointAngle = Math.atan2(dy, dx);
+
+  let finalAngle = startAngle + turnCount * 2 * Math.PI + endpointAngle;
+
+  let startRadius = radius * 0.01;
+  const growthRate = Math.log(radius / startRadius) / numPoints;
+
+  for (let i = 0; i < numPoints; i++) {
+    let angle = startAngle + (i / numPoints) * (finalAngle - startAngle);
+    let r = startRadius * Math.exp(growthRate * i);
+    let x = center.cx + r * Math.cos(angle);
+    let y = center.cy + r * Math.sin(angle);
+    spiralPoints.push(`${x},${y}`);
+  }
+
   return (
     <div style={{ maxWidth: '90%', maxHeight: '90%', position: 'relative' }}
          onMouseMove={handleMouseMove}
@@ -124,11 +147,12 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, onUpdateN, on
       <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         <circle cx={center.cx} cy={center.cy} r={radius} stroke="green" strokeWidth="2" fill="transparent" />
         <circle cx={center.cx} cy={center.cy} r={radius*pRib} stroke="purple" strokeWidth="2" fill="transparent" />
+        <polyline points={spiralPoints.join(' ')} fill="none" stroke="orange" strokeWidth="2" />
         {renderPurpleLines(countPrimaryRibs, center, endpoint, radius)}
         <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
         <circle cx={center.cx} cy={center.cy} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'center'})} />
-        <circle cx={endpoint.ex} cy={endpoint.ey} r="5" fill="red"
+        <circle cx={endpoint.ex} cy={endpoint.ey} r="8" fill="red"
                 onMouseDown={handleMouseDown({type: 'endpoint'})} />
         <circle cx={p1Position.x} cy={p1Position.y} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'p1', func: setP1})} />
@@ -142,24 +166,5 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, onUpdateN, on
     </div>
   );
 }
-
-//  // Calculate points for the spiral
-//  const numPoints = 1000; // Number of points to draw the spiral
-//  const anglePoints = 350
-//  const spiralPoints = [];
-//  let angleOffset = Math.atan2(endpoint.ey - center.cy, endpoint.ex - center.cx);
-//  let startRadius = radius * 0.01; // Smaller starting radius for visibility
-//
-//  for (let i = 0; i < numPoints; i++) {
-//    let angle = angleOffset + (i / anglePoints) * (Math.PI * 4); // Full spiral rotations
-//    let r = startRadius * Math.exp(0.0047 * i); // Adjust 0.1 for tighter or looser spiral
-//    let x = center.cx + r * Math.cos(angle);
-//    let y = center.cy + r * Math.sin(angle);
-//    spiralPoints.push(`${x},${y}`);
-//  }
-//
-//
-//        <polyline points={spiralPoints.join(' ')} fill="none" stroke="purple" strokeWidth="2" />
-
 
 export default ImageMeasure;
