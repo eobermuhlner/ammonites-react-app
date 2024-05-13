@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function ImageMeasure({ imageUrl, width, height, countZ, onUpdateN, onUpdateH }) {
+function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, onUpdateN, onUpdateH }) {
   const imgRef = useRef(null);
   const svgRef = useRef(null);
   const [center, setCenter] = useState({ cx: 200, cy: 200 });
@@ -32,7 +32,7 @@ function ImageMeasure({ imageUrl, width, height, countZ, onUpdateN, onUpdateH })
         onUpdateH(H)
       }
     }
-  }, [p1, p2, p3, N, H, onUpdateN, onUpdateH]);
+  }, [p1, p2, p3, onUpdateN, onUpdateH]);
 
   const adjustPoints = (t) => ({ x: center.cx + t * (endpoint.ex - center.cx), y: center.cy + t * (endpoint.ey - center.cy) });
 
@@ -124,7 +124,7 @@ function ImageMeasure({ imageUrl, width, height, countZ, onUpdateN, onUpdateH })
       <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         <circle cx={center.cx} cy={center.cy} r={radius} stroke="green" strokeWidth="2" fill="transparent" />
         <circle cx={center.cx} cy={center.cy} r={radius*pRib} stroke="purple" strokeWidth="2" fill="transparent" />
-        {renderPurpleLines(countZ, center, endpoint, radius)}
+        {renderPurpleLines(countPrimaryRibs, center, endpoint, radius)}
         <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
         <circle cx={center.cx} cy={center.cy} r="5" fill="red"
                 onMouseDown={handleMouseDown({type: 'center'})} />

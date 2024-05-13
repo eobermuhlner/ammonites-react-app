@@ -20,29 +20,48 @@ function AmmoniteSearch() {
         proportionH: '',
         proportionB: '',
         proportionQ: '',
-        countZ: ''
+        countPrimaryRibs: '',
+        countSecondaryRibs: '',
+        ribDivisionRatio: ''
     });
     const [results, setResults] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {
         if (filters.diameterSide && filters.diameterCross) {
-            const newProportionB = parseFloat(filters.diameterCross) / parseFloat(filters.diameterSide);
-            setFilters(prevState => ({
-                ...prevState,
-                proportionB: newProportionB.toFixed(1)
-            }));
+            const newProportionB = (parseFloat(filters.diameterCross) / parseFloat(filters.diameterSide)).toFixed(1);
+            if (filters.proportionB !== newProportionB) {
+                setFilters(prevState => ({
+                    ...prevState,
+                    proportionB: newProportionB
+                }));
+            }
         }
     }, [filters.diameterSide, filters.diameterCross]);
+
     useEffect(() => {
         if (filters.proportionH && filters.proportionB) {
-            const newProportionQ = parseFloat(filters.proportionH) / parseFloat(filters.proportionB);
-            setFilters(prevState => ({
-                ...prevState,
-                proportionQ: newProportionQ.toFixed(1)
-            }));
+            const newProportionQ = (parseFloat(filters.proportionH) / parseFloat(filters.proportionB)).toFixed(1);
+            if (filters.proportionQ !== newProportionQ) {
+                setFilters(prevState => ({
+                    ...prevState,
+                    proportionQ: newProportionQ
+                }));
+            }
         }
     }, [filters.proportionH, filters.proportionB]);
+
+    useEffect(() => {
+        if (filters.countPrimaryRibs && filters.countSecondaryRibs) {
+            const newRibDivisionRatio = (parseFloat(filters.countSecondaryRibs) / parseFloat(filters.countPrimaryRibs)).toFixed(1);
+            if (filters.ribDivisionRatio !== newRibDivisionRatio) {
+                setFilters(prevState => ({
+                    ...prevState,
+                    ribDivisionRatio: newRibDivisionRatio
+                }));
+            }
+        }
+    }, [filters.countPrimaryRibs, filters.countSecondaryRibs]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -77,17 +96,21 @@ function AmmoniteSearch() {
     };
 
     const handleUpdateN = (newN) => {
-        setFilters(prevState => ({
-            ...prevState,
-            proportionN: newN
-        }));
+        if (filters.proportionN !== newN) {
+            setFilters(prevState => ({
+                ...prevState,
+                proportionN: newN
+            }));
+        }
     };
 
     const handleUpdateH = (newH) => {
-        setFilters(prevState => ({
-            ...prevState,
-            proportionH: newH
-        }));
+        if (filters.proportionH !== newH) {
+            setFilters(prevState => ({
+                ...prevState,
+                proportionH: newH
+            }));
+        }
     };
 
     return (
@@ -96,7 +119,7 @@ function AmmoniteSearch() {
             <div className="row">
                 <div className="col-md-6">
                     <input type="file" onChange={handleImageChange} />
-                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} countZ={filters.countZ} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
+                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} countPrimaryRibs={filters.countPrimaryRibs} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
                 </div>
                 <div className="col-md-6">
                     <div>
@@ -125,8 +148,16 @@ function AmmoniteSearch() {
                             <input type="text" name="proportionQ" placeholder="Proportion Q" value={filters.proportionQ} onChange={handleInputChange} />
                         </div>
                         <div>
-                            <label htmlFor="countZ">Count Z:</label>
-                            <input type="text" name="countZ" placeholder="Count Z" value={filters.countZ} onChange={handleInputChange} />
+                            <label htmlFor="countPrimaryRibs">Count Primary Ribs:</label>
+                            <input type="text" name="countPrimaryRibs" placeholder="Count Primary Ribs" value={filters.countPrimaryRibs} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="countSecondaryRibs">Count Secondary Ribs:</label>
+                            <input type="text" name="countSecondaryRibs" placeholder="Count Secondary Ribs" value={filters.countSecondaryRibs} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label htmlFor="ribDivisionRatio">Rib Division Ratio:</label>
+                            <input type="text" name="ribDivisionRatio" placeholder="Rib Division Ratio" value={filters.ribDivisionRatio} onChange={handleInputChange} />
                         </div>
                         <div>
                             <button onClick={handleSearch}>Search</button>
@@ -156,7 +187,9 @@ function AmmoniteSearch() {
                         <th>H</th>
                         <th>B</th>
                         <th>Q</th>
-                        <th>Z</th>
+                        <th>Primary Ribs</th>
+                        <th>Secondary Ribs</th>
+                        <th>Rib Division Ratio</th>
                         <th>Measurement Image</th>
                     </tr>
                 </thead>
@@ -186,7 +219,9 @@ function AmmoniteSearch() {
                             <td>{result.measurement.proportionH}</td>
                             <td>{result.measurement.proportionB}</td>
                             <td>{result.measurement.proportionQ}</td>
-                            <td>{result.measurement.countZ}</td>
+                            <td>{result.measurement.countPrimaryRibs}</td>
+                            <td>{result.measurement.countSecondaryRibs}</td>
+                            <td>{result.measurement.ribDivisionRatio}</td>
                             <td><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></td>
                         </tr>
                     ))}
