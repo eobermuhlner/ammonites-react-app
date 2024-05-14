@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchAllAmmonites } from './api';
-import ImageViewerComponent from './ImageViewerComponent';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { fetchAllAmmonites } from '../api';
+import ImageViewerComponent from '../components/ImageViewerComponent';
 
 function AmmoniteBrowse() {
   const [data, setData] = useState([]);

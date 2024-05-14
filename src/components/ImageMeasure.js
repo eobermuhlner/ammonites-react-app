@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 
 function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, turns, onUpdateN, onUpdateH }) {
   const imgRef = useRef(null);

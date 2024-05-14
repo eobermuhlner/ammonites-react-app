@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import ImageViewerComponent from './ImageViewerComponent';
-import ImageMeasure from './ImageMeasure';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import ImageViewerComponent from '../components/ImageViewerComponent';
+import ImageMeasure from '../components/ImageMeasure';
 import './AmmoniteSearch.css';
 
 function DistanceAsMatchPercentage({ x }) {

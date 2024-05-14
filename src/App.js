@@ -1,9 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import AmmoniteBrowse from './AmmoniteBrowse';
-import AmmoniteSearch from './AmmoniteSearch';
-import AmmoniteViewer from './AmmoniteViewer';
-import DataImport from './DataImport';
-import './App.css';
+import AmmoniteBrowse from './pages/AmmoniteBrowse';
+import AmmoniteSearch from './pages/AmmoniteSearch';
+import AmmoniteViewer from './pages/AmmoniteViewer';
+import DataImport from './pages/DataImport';
 
 function App() {
   return (

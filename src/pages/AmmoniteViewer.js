@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ImageViewerComponent from './ImageViewerComponent';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import ImageViewerComponent from '../components/ImageViewerComponent';
 
 function AmmoniteViewer() {
   const [ammonite, setAmmonite] = useState(null);
