@@ -21,7 +21,8 @@ function AmmoniteSearch() {
         countPrimaryRibs: '',
         countSecondaryRibs: '',
         ribDivisionRatio: '',
-        turns: ''
+        turns: '',
+        limit: 10
     });
     const [results, setResults] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
@@ -66,7 +67,7 @@ function AmmoniteSearch() {
         const { name, value } = event.target;
         setFilters(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: name === 'limit' ? parseInt(value, 10) : value
         }));
     };
 
@@ -116,7 +117,7 @@ function AmmoniteSearch() {
         <div className="container">
             <h1 className="text-center my-4">Ammonite Search</h1>
             <div className="row justify-content-center">
-                <div className="col-12 col-md-8 text-center">
+                <div className="col-12 text-center">
                     <input type="file" onChange={handleImageChange} className="form-control mb-3" />
                     {imageUrl && (
                         <div className="image-measure-container">
@@ -134,7 +135,7 @@ function AmmoniteSearch() {
                 </div>
             </div>
             <div className="row justify-content-center mt-4">
-                <div className="col-12 col-md-8">
+                <div className="col-12">
                     <div className="form-group">
                         <label htmlFor="diameterSide">Diameter Side:</label>
                         <input
@@ -241,6 +242,17 @@ function AmmoniteSearch() {
                             name="turns"
                             placeholder="Turns"
                             value={filters.turns}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="limit">Result Limit:</label>
+                        <input
+                            type="number"
+                            name="limit"
+                            placeholder="Result Limit"
+                            value={filters.limit}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
