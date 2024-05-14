@@ -61,3 +61,40 @@
   background-color: #0056b3; /* Darker shade on hover */
 }
 
+/* Base styles for form */
+.form-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically on smaller screens */
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%; /* Ensure input fields take full width on smaller screens */
+}
+
+.submit-button {
+    margin-top: 20px;
+    width: 100%; /* Full width button on smaller screens */
+}
+
+/* Media query for screens wider than 600px */
+@media (min-width: 600px) {
+    .form-group {
+        flex-direction: row; /* Align label and input horizontally on larger screens */
+        align-items: center;
+    }
+
+    .form-group label {
+        margin-right: 10px;
+        margin-bottom: 0;
+        width: 150px; /* Fixed width for labels on larger screens */
+    }
+
+    .submit-button {
+        width: auto; /* Auto width for button on larger screens */
+    }
+}
