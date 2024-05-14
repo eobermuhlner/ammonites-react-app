@@ -115,123 +115,205 @@ function AmmoniteSearch() {
     };
 
     return (
-        <div>
-            <h1>Ammonite Search</h1>
-            <div className="row">
-                <div className="col-md-6">
-                    <input type="file" onChange={handleImageChange} />
-                    {imageUrl && <ImageMeasure imageUrl={imageUrl} width={800} height={800} countPrimaryRibs={filters.countPrimaryRibs} turns={filters.turns} onUpdateN={handleUpdateN} onUpdateH={handleUpdateH}/>}
-                </div>
-                <div className="col-md-6">
-                    <div>
-                        <div>
-                            <label htmlFor="diameterSide">Diameter Side:</label>
-                            <input type="text" name="diameterSide" placeholder="Diameter Side" value={filters.diameterSide} onChange={handleInputChange} />
+        <div className="container">
+            <h1 className="text-center my-4">Ammonite Search</h1>
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-8 text-center">
+                    <input type="file" onChange={handleImageChange} className="form-control mb-3" />
+                    {imageUrl && (
+                        <div className="image-measure-container">
+                            <ImageMeasure
+                                imageUrl={imageUrl}
+                                width="100%"
+                                height="100%"
+                                countPrimaryRibs={filters.countPrimaryRibs}
+                                turns={filters.turns}
+                                onUpdateN={handleUpdateN}
+                                onUpdateH={handleUpdateH}
+                            />
                         </div>
-                        <div>
-                            <label htmlFor="diameterCross">Diameter Cross:</label>
-                            <input type="text" name="diameterCross" placeholder="Diameter Cross" value={filters.diameterCross} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="proportionN">Proportion N:</label>
-                            <input type="text" name="proportionN" placeholder="Proportion N" value={filters.proportionN} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="proportionH">Proportion H:</label>
-                            <input type="text" name="proportionH" placeholder="Proportion H" value={filters.proportionH} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="proportionB">Proportion B:</label>
-                            <input type="text" name="proportionB" placeholder="Proportion B" value={filters.proportionB} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="proportionQ">Proportion Q:</label>
-                            <input type="text" name="proportionQ" placeholder="Proportion Q" value={filters.proportionQ} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="countPrimaryRibs">Count Primary Ribs:</label>
-                            <input type="text" name="countPrimaryRibs" placeholder="Primary Ribs" value={filters.countPrimaryRibs} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="countSecondaryRibs">Count Secondary Ribs:</label>
-                            <input type="text" name="countSecondaryRibs" placeholder="Secondary Ribs" value={filters.countSecondaryRibs} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="ribDivisionRatio">Rib Division Ratio:</label>
-                            <input type="text" name="ribDivisionRatio" placeholder="Rib Division Ratio" value={filters.ribDivisionRatio} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <label htmlFor="turns">Turns:</label>
-                            <input type="text" name="turns" placeholder="Turns" value={filters.turns} onChange={handleInputChange} />
-                        </div>
-                        <div>
-                            <button onClick={handleSearch}>Search</button>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Match</th>
-                        <th></th>
-                        <th>Id</th>
-                        <th>Subclass</th>
-                        <th>Family</th>
-                        <th>Subfamily</th>
-                        <th>Genus</th>
-                        <th>Subgenus</th>
-                        <th>Species</th>
-                        <th>Strata</th>
-                        <th>Description</th>
-                        <th>Comment</th>
-                        <th>Image</th>
-                        <th>Diameter Side</th>
-                        <th>Diameter Cross</th>
-                        <th>N</th>
-                        <th>H</th>
-                        <th>B</th>
-                        <th>Q</th>
-                        <th>Primary Ribs</th>
-                        <th>Secondary Ribs</th>
-                        <th>Rib Division Ratio</th>
-                        <th>Measurement Image</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {results.map(result => (
-                        <tr key={result.ammonite.id}>
-                            <td><DistanceAsMatchPercentage x={result.distance} /></td>
-                            <td>
-                                <Link to={`/ammonite/${result.ammonite.id}`}>
-                                    <button>View</button>
-                                </Link>
-                            </td>
-                            <td>{result.ammonite.id}</td>
-                            <td>{result.ammonite.taxonomySubclass}</td>
-                            <td>{result.ammonite.taxonomyFamily}</td>
-                            <td>{result.ammonite.taxonomySubfamily}</td>
-                            <td>{result.ammonite.taxonomyGenus}</td>
-                            <td>{result.ammonite.taxonomySubgenus}</td>
-                            <td>{result.ammonite.taxonomySpecies}</td>
-                            <td>{result.ammonite.strata}</td>
-                            <td>{result.ammonite.description}</td>
-                            <td>{result.ammonite.comment}</td>
-                            <td><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></td>
-                            <td>{result.measurement.diameterSide}</td>
-                            <td>{result.measurement.diameterCross}</td>
-                            <td>{result.measurement.proportionN}</td>
-                            <td>{result.measurement.proportionH}</td>
-                            <td>{result.measurement.proportionB}</td>
-                            <td>{result.measurement.proportionQ}</td>
-                            <td>{result.measurement.countPrimaryRibs}</td>
-                            <td>{result.measurement.countSecondaryRibs}</td>
-                            <td>{result.measurement.ribDivisionRatio}</td>
-                            <td><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></td>
+            <div className="row justify-content-center mt-4">
+                <div className="col-12 col-md-8">
+                    <div className="form-group">
+                        <label htmlFor="diameterSide">Diameter Side:</label>
+                        <input
+                            type="text"
+                            name="diameterSide"
+                            placeholder="Diameter Side"
+                            value={filters.diameterSide}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="diameterCross">Diameter Cross:</label>
+                        <input
+                            type="text"
+                            name="diameterCross"
+                            placeholder="Diameter Cross"
+                            value={filters.diameterCross}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="proportionN">Proportion N:</label>
+                        <input
+                            type="text"
+                            name="proportionN"
+                            placeholder="Proportion N"
+                            value={filters.proportionN}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="proportionH">Proportion H:</label>
+                        <input
+                            type="text"
+                            name="proportionH"
+                            placeholder="Proportion H"
+                            value={filters.proportionH}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="proportionB">Proportion B:</label>
+                        <input
+                            type="text"
+                            name="proportionB"
+                            placeholder="Proportion B"
+                            value={filters.proportionB}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="proportionQ">Proportion Q:</label>
+                        <input
+                            type="text"
+                            name="proportionQ"
+                            placeholder="Proportion Q"
+                            value={filters.proportionQ}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="countPrimaryRibs">Count Primary Ribs:</label>
+                        <input
+                            type="text"
+                            name="countPrimaryRibs"
+                            placeholder="Primary Ribs"
+                            value={filters.countPrimaryRibs}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="countSecondaryRibs">Count Secondary Ribs:</label>
+                        <input
+                            type="text"
+                            name="countSecondaryRibs"
+                            placeholder="Secondary Ribs"
+                            value={filters.countSecondaryRibs}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="ribDivisionRatio">Rib Division Ratio:</label>
+                        <input
+                            type="text"
+                            name="ribDivisionRatio"
+                            placeholder="Rib Division Ratio"
+                            value={filters.ribDivisionRatio}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="turns">Turns:</label>
+                        <input
+                            type="text"
+                            name="turns"
+                            placeholder="Turns"
+                            value={filters.turns}
+                            onChange={handleInputChange}
+                            className="form-control mb-2"
+                        />
+                    </div>
+                    <button onClick={handleSearch} className="btn btn-primary">Search</button>
+                </div>
+            </div>
+            <div className="table-responsive mt-4">
+                <table className="table table-bordered table-striped">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th>Match</th>
+                            <th></th>
+                            <th>Id</th>
+                            <th>Subclass</th>
+                            <th>Family</th>
+                            <th>Subfamily</th>
+                            <th>Genus</th>
+                            <th>Subgenus</th>
+                            <th>Species</th>
+                            <th>Strata</th>
+                            <th>Description</th>
+                            <th>Comment</th>
+                            <th>Image</th>
+                            <th>Diameter Side</th>
+                            <th>Diameter Cross</th>
+                            <th>N</th>
+                            <th>H</th>
+                            <th>B</th>
+                            <th>Q</th>
+                            <th>Primary Ribs</th>
+                            <th>Secondary Ribs</th>
+                            <th>Rib Division Ratio</th>
+                            <th>Measurement Image</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {results.map(result => (
+                            <tr key={result.ammonite.id}>
+                                <td><DistanceAsMatchPercentage x={result.distance} /></td>
+                                <td>
+                                    <Link to={`/ammonite/${result.ammonite.id}`}>
+                                        <button className="btn btn-sm btn-info">View</button>
+                                    </Link>
+                                </td>
+                                <td>{result.ammonite.id}</td>
+                                <td>{result.ammonite.taxonomySubclass}</td>
+                                <td>{result.ammonite.taxonomyFamily}</td>
+                                <td>{result.ammonite.taxonomySubfamily}</td>
+                                <td>{result.ammonite.taxonomyGenus}</td>
+                                <td>{result.ammonite.taxonomySubgenus}</td>
+                                <td>{result.ammonite.taxonomySpecies}</td>
+                                <td>{result.ammonite.strata}</td>
+                                <td>{result.ammonite.description}</td>
+                                <td>{result.ammonite.comment}</td>
+                                <td><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></td>
+                                <td>{result.measurement.diameterSide}</td>
+                                <td>{result.measurement.diameterCross}</td>
+                                <td>{result.measurement.proportionN}</td>
+                                <td>{result.measurement.proportionH}</td>
+                                <td>{result.measurement.proportionB}</td>
+                                <td>{result.measurement.proportionQ}</td>
+                                <td>{result.measurement.countPrimaryRibs}</td>
+                                <td>{result.measurement.countSecondaryRibs}</td>
+                                <td>{result.measurement.ribDivisionRatio}</td>
+                                <td><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
