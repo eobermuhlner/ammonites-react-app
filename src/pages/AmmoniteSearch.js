@@ -113,6 +113,32 @@ function AmmoniteSearch() {
         }
     };
 
+    const AmmoniteMeasurementCard = ({ result }) => (
+        <div className="card d-md-none mb-4">
+            <div className="card-header">
+                <div><strong>Species:</strong> {result.ammonite.taxonomySpecies}</div>
+                <DistanceAsMatchPercentage x={result.distance} />
+            </div>
+            <div className="card-body">
+                <div><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></div>
+                <div><strong>Strata:</strong> {result.ammonite.strata}</div>
+                <div><strong>Diameter Side:</strong> {result.measurement.diameterSide}</div>
+                <div><strong>Diameter Cross:</strong> {result.measurement.diameterCross}</div>
+                <div><strong>N:</strong> {result.measurement.proportionN}</div>
+                <div><strong>H:</strong> {result.measurement.proportionH}</div>
+                <div><strong>B:</strong> {result.measurement.proportionB}</div>
+                <div><strong>Q:</strong> {result.measurement.proportionQ}</div>
+                <div><strong>Primary Ribs:</strong> {result.measurement.countPrimaryRibs}</div>
+                <div><strong>Secondary Ribs:</strong> {result.measurement.countSecondaryRibs}</div>
+                <div><strong>Rib Division Ratio:</strong> {result.measurement.ribDivisionRatio}</div>
+                <div><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></div>
+                <Link to={`/ammonite/${result.ammonite.id}`}>
+                    <button className="btn btn-sm btn-info mt-2">View</button>
+                </Link>
+            </div>
+        </div>
+    );
+
     return (
         <div className="container">
             <h1 className="text-center my-4">Ammonite Search</h1>
@@ -260,22 +286,14 @@ function AmmoniteSearch() {
                     <button onClick={handleSearch} className="btn btn-primary">Search</button>
                 </div>
             </div>
-            <div className="table-responsive mt-4">
+            <div className="table-responsive mt-4 d-none d-md-block">
                 <table className="table table-bordered table-striped">
                     <thead className="thead-dark">
                         <tr>
                             <th>Match</th>
                             <th></th>
-                            <th>Id</th>
-                            <th>Subclass</th>
-                            <th>Family</th>
-                            <th>Subfamily</th>
-                            <th>Genus</th>
-                            <th>Subgenus</th>
                             <th>Species</th>
                             <th>Strata</th>
-                            <th>Description</th>
-                            <th>Comment</th>
                             <th>Image</th>
                             <th>Diameter Side</th>
                             <th>Diameter Cross</th>
@@ -298,16 +316,8 @@ function AmmoniteSearch() {
                                         <button className="btn btn-sm btn-info">View</button>
                                     </Link>
                                 </td>
-                                <td>{result.ammonite.id}</td>
-                                <td>{result.ammonite.taxonomySubclass}</td>
-                                <td>{result.ammonite.taxonomyFamily}</td>
-                                <td>{result.ammonite.taxonomySubfamily}</td>
-                                <td>{result.ammonite.taxonomyGenus}</td>
-                                <td>{result.ammonite.taxonomySubgenus}</td>
                                 <td>{result.ammonite.taxonomySpecies}</td>
                                 <td>{result.ammonite.strata}</td>
-                                <td>{result.ammonite.description}</td>
-                                <td>{result.ammonite.comment}</td>
                                 <td><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></td>
                                 <td>{result.measurement.diameterSide}</td>
                                 <td>{result.measurement.diameterCross}</td>
@@ -323,6 +333,11 @@ function AmmoniteSearch() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            <div className="d-md-none">
+                {results.map(result => (
+                    <AmmoniteMeasurementCard key={result.ammonite.id} result={result} />
+                ))}
             </div>
         </div>
     );

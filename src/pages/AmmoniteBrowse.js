@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchAllAmmonites } from '../api';
 import ImageViewerComponent from '../components/ImageViewerComponent';
+import './AmmoniteBrowse.css';
 
 function AmmoniteBrowse() {
   const [data, setData] = useState([]);
@@ -28,6 +29,28 @@ function AmmoniteBrowse() {
     item.taxonomyFamily.toLowerCase().includes(filters.taxonomyFamily.toLowerCase()) &&
     item.taxonomySpecies.toLowerCase().includes(filters.taxonomySpecies.toLowerCase()) &&
     item.strata.toLowerCase().includes(filters.strata.toLowerCase())
+  );
+
+  const AmmoniteCard = ({ item }) => (
+    <div className="card d-md-none mb-4">
+      <div className="card-header">
+        <div><strong>Species:</strong> {item.taxonomySpecies}</div>
+      </div>
+      <div className="card-body">
+        <div><strong>Subclass:</strong> {item.taxonomySubclass}</div>
+        <div><strong>Family:</strong> {item.taxonomyFamily}</div>
+        <div><strong>Subfamily:</strong> {item.taxonomySubfamily}</div>
+        <div><strong>Genus:</strong> {item.taxonomyGenus}</div>
+        <div><strong>Subgenus:</strong> {item.taxonomySubgenus}</div>
+        <div><strong>Strata:</strong> {item.strata}</div>
+        <div><strong>Description:</strong> {item.description}</div>
+        <div><strong>Comment:</strong> {item.comment}</div>
+        <div><ImageViewerComponent imageId={item.imageId} width={100} height={100} /></div>
+        <Link to={`/ammonite/${item.id}`}>
+          <button className="btn btn-primary btn-sm">View</button>
+        </Link>
+      </div>
+    </div>
   );
 
   return (
@@ -68,12 +91,11 @@ function AmmoniteBrowse() {
           />
         </div>
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive d-none d-md-block">
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
               <th></th>
-              <th>Id</th>
               <th>Subclass</th>
               <th>Family</th>
               <th>Subfamily</th>
@@ -94,7 +116,6 @@ function AmmoniteBrowse() {
                     <button className="btn btn-primary btn-sm">View</button>
                   </Link>
                 </td>
-                <td>{item.id}</td>
                 <td>{item.taxonomySubclass}</td>
                 <td>{item.taxonomyFamily}</td>
                 <td>{item.taxonomySubfamily}</td>
@@ -109,6 +130,11 @@ function AmmoniteBrowse() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="d-md-none">
+        {filteredData.map(item => (
+          <AmmoniteCard key={item.id} item={item} />
+        ))}
       </div>
     </div>
   );
