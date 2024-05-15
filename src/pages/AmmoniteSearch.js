@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { fetchMatchingAmmonites } from '../services/api';
 import ImageViewerComponent from '../components/ImageViewerComponent';
 import ImageMeasure from '../components/ImageMeasure';
 import './AmmoniteSearch.css';
@@ -73,15 +73,8 @@ function AmmoniteSearch() {
 
     const handleSearch = async () => {
         setResults([]);
-        try {
-            const response = await axios.get(`http://localhost:8080/api/ammonites/matching`, {
-                params: filters
-            });
-            setResults(response.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setResults([]);
-        }
+        fetchMatchingAmmonites(filters)
+          .then(setResults);
     };
 
     const handleImageChange = (event) => {

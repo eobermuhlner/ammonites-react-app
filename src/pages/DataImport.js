@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { postImportAmmonites, postImportAmmoniteMeasurements } from '../services/api';
 
 function DataImport() {
     const [csvFile, setCsvFile] = useState(null);
@@ -28,21 +28,16 @@ function DataImport() {
             formData.append('images', imageFiles[i]);
         }
 
-        const endpoint = importType === 'ammonites'
-            ? 'http://localhost:8080/api/import/ammonites'
-            : 'http://localhost:8080/api/import/ammonite/measurements';
-
-        try {
-            const response = await axios.post(endpoint, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            setResponseMessage(response.data);
-            setErrorMessage('');
-        } catch (error) {
-            setResponseMessage('');
-            setErrorMessage(`${error.response ? error.response.data : error.message}`);
+        setResponseMessage('');
+        setErrorMessage('');
+        if (importType === 'ammonites') {
+            postImportAmmonites(formData)
+              .then(setResponseMessage)
+              .catch(error => setErrorMessage(error.response ? error.response.data : error.message))
+        } else {
+            postImportAmmoniteMeasurements(formData)
+              .then(setResponseMessage)
+              .catch(error => setErrorMessage(error.response ? error.response.data : error.message))
         }
     };
 

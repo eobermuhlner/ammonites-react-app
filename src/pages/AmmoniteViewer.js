@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ImageViewerComponent from '../components/ImageViewerComponent';
+import { fetchAmmoniteById, updateAmmoniteById } from '../services/api';
 
 function AmmoniteViewer() {
   const [ammonite, setAmmonite] = useState(null);
@@ -9,13 +10,11 @@ function AmmoniteViewer() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/ammonites/${id}`)
-      .then(response => response.json())
+    fetchAmmoniteById(id)
       .then(data => {
         setAmmonite(data);
         setEditAmmonite(data);
-      })
-      .catch(error => console.error('Failed to fetch ammonite:', error));
+      });
   }, [id]);
 
   const handleEditToggle = () => {
@@ -26,27 +25,13 @@ function AmmoniteViewer() {
     setEditAmmonite(prev => ({ ...prev, imageId: newImageId }));
   };
 
-    const handleSave = () => {
-      fetch(`http://localhost:8080/api/ammonites/${id}`, {
-        method: 'PUT', // Specifying the HTTP method
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editAmmonite) // Sending the updated ammonite as JSON
-      })
-      .then(response => {
-        if (response.ok) {
-          return response.json(); // Returning the updated ammonite from the server
-        }
-        throw new Error('Network response was not ok.');
-      })
+  const handleSave = () => {
+    updateAmmoniteById(ammonite.id, editAmmonite)
       .then(updatedAmmonite => {
-        setAmmonite(updatedAmmonite); // Updating local state with the confirmed data from the server
+        setAmmonite(updatedAmmonite);
         setIsEditMode(false);
-        console.log('Update successful:', updatedAmmonite);
-      })
-      .catch(error => console.error('Failed to update ammonite:', error));
-    };
+      });
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;

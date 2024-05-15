@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchAllAmmonites } from '../api';
+import { fetchAllAmmonites } from '../services/api';
 import ImageViewerComponent from '../components/ImageViewerComponent';
 import './AmmoniteBrowse.css';
 
@@ -14,8 +14,7 @@ function AmmoniteBrowse() {
 
   useEffect(() => {
     fetchAllAmmonites()
-      .then(setData)
-      .catch(error => console.error('Failed to fetch data:', error));
+      .then(setData);
   }, []);
 
   const handleFilterChange = (e) => {
