@@ -142,8 +142,8 @@ function AmmoniteSearch() {
                         <div className="image-measure-container">
                             <ImageMeasure
                                 imageUrl={imageUrl}
-                                width="100%"
-                                height="100%"
+                                width="80%"
+                                height="80%"
                                 countPrimaryRibs={filters.countPrimaryRibs}
                                 turns={filters.turns}
                                 onUpdateN={handleUpdateN}
