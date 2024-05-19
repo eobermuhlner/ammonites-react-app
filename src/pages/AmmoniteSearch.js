@@ -134,7 +134,7 @@ function AmmoniteSearch() {
 
     return (
         <div className="container">
-            <h1 className="text-center my-4">Ammonite Search</h1>
+            <h1 className="text-center my-4">Search</h1>
             <div className="row justify-content-center">
                 <div className="col-12 text-center">
                     <input type="file" onChange={handleImageChange} className="form-control mb-3" />

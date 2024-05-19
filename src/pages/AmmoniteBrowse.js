@@ -54,7 +54,7 @@ function AmmoniteBrowse() {
 
   return (
     <div className="container">
-      <h1 className="my-4">Data List</h1>
+      <h1 className="my-4">Browse</h1>
       <div className="row mb-4">
         <div className="col-md-4 mb-2">
           <label htmlFor="taxonomyFamily">Family:</label>
