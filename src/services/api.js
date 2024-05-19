@@ -9,6 +9,19 @@ const client = axios.create({
   }
 });
 
+client.interceptors.request.use(
+    config => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
 export const fetchAllAmmonites = () => {
   return client.get('/ammonites')
     .then(response => response.data)
@@ -74,4 +87,24 @@ export const postImportAmmoniteMeasurements = (formData) => {
       console.error('Error importing ammonite measurements:', error);
       throw error;
     });
+};
+
+export const fetchImageById = (id) => {
+    return client.get(`/images/${id}`, { responseType: 'blob' })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error fetching image with id ${id}:`, error);
+            throw error;
+        });
+};
+
+export const uploadImage = (formData) => {
+    return client.post('/images/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error uploading image:', error);
+            throw error;
+        });
 };

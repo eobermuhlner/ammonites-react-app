@@ -3,6 +3,7 @@ import AmmoniteBrowse from './pages/AmmoniteBrowse';
 import AmmoniteSearch from './pages/AmmoniteSearch';
 import AmmoniteViewer from './pages/AmmoniteViewer';
 import DataImport from './pages/DataImport';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
               <li className="nav-item">
                 <Link className="nav-link" to="/import">Import</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -34,6 +38,7 @@ function App() {
           <Route path="/search" element={<AmmoniteSearch />} />
           <Route path="/import" element={<DataImport />} />
           <Route path="/ammonite/:id" element={<AmmoniteViewer />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
