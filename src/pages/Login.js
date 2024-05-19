@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Login() {
+function Login({ setIsAuthenticated }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -23,6 +23,7 @@ function Login() {
             // Handle successful login
             console.log('Login successful', response.data);
             localStorage.setItem('token', response.data.token);
+            setIsAuthenticated(true);
             navigate('/browse');
         } catch (error) {
             // Handle login error
