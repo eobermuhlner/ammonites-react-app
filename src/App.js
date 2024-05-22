@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AmmoniteBrowse from './pages/AmmoniteBrowse';
 import AmmoniteSearch from './pages/AmmoniteSearch';
 import AmmoniteViewer from './pages/AmmoniteViewer';
 import DataImport from './pages/DataImport';
+import UserList from './pages/UserList';
+import UserForm from './pages/UserForm';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
@@ -45,6 +47,26 @@ function App() {
                         element={
                             <PrivateRoute isAuthenticated={isAuthenticated}>
                                 <DataImport />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/users"
+                        element={
+                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                                <UserList />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/users/new"
+                        element={<UserForm />}
+                    />
+                    <Route
+                        path="/users/:id"
+                        element={
+                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                                <UserForm />
                             </PrivateRoute>
                         }
                     />

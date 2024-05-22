@@ -31,6 +31,9 @@ function Navbar({ isAuthenticated, setIsAuthenticated }) {
                                     <Link className="nav-link" to="/import">Import</Link>
                                 </li>
                                 <li className="nav-item">
+                                    <Link className="nav-link" to="/users">Users</Link>
+                                </li>
+                                <li className="nav-item">
                                     <button className="nav-link btn" onClick={handleLogout}>Logout</button>
                                 </li>
                             </>

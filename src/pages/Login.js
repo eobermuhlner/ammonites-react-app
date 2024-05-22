@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,10 +32,6 @@ function Login({ setIsAuthenticated }) {
         }
     };
 
-    const handleGoogleLogin = () => {
-        window.location.href = '/oauth2/authorization/google';
-    };
-
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -67,7 +63,9 @@ function Login({ setIsAuthenticated }) {
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100">Login</button>
                             </form>
-                            <button onClick={handleGoogleLogin} className="btn btn-primary w-100 mt-3">Login with Google</button>
+                            <button className="btn btn-secondary w-100 mt-3" onClick={() => navigate('/users/new')}>
+                                Create New User
+                            </button>
                         </div>
                     </div>
                 </div>

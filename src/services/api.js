@@ -108,3 +108,83 @@ export const uploadImage = (formData) => {
             throw error;
         });
 };
+
+export const fetchAllUsers = () => {
+    return client.get('/users')
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error fetching all users:', error);
+            throw error;
+        });
+};
+
+export const fetchUserById = (id) => {
+    return client.get(`/users/${id}`)
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error fetching user with id ${id}:`, error);
+            throw error;
+        });
+};
+
+export const createUser = (user) => {
+    return client.post('/users', JSON.stringify(user), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error creating user:', error);
+            throw error;
+        });
+};
+
+export const createUserSelfOnboarding = (user) => {
+    return client.post('/users/new', JSON.stringify(user), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error creating user:', error);
+            throw error;
+        });
+};
+
+export const updateUserById = (id, user) => {
+    return client.put(`/users/${id}`, JSON.stringify(user), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Failed to update user with id ${id}:`, error);
+            throw error;
+        });
+};
+
+export const deleteUserById = (id) => {
+    return client.delete(`/users/${id}`)
+        .then(response => {
+            if (response.status === 204) {
+                return;
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .catch(error => {
+            console.error(`Failed to delete user with id ${id}:`, error);
+            throw error;
+        });
+};
+
+export const createDefaultUser = () => {
+    return client.post('/users/default')
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error creating default user:', error);
+            throw error;
+        });
+};
