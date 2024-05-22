@@ -4,12 +4,15 @@ import { createUserSelfOnboarding, fetchUserById, updateUserById } from '../serv
 
 const UserForm = () => {
     const [user, setUser] = useState({ username: '', password: '', enabled: true });
+    const [error, setError] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (id) {
-            fetchUserById(id).then(setUser).catch(console.error);
+            fetchUserById(id)
+                .then(setUser)
+                .catch((err) => setError(`Failed to fetch user data: ${err}`));
         }
     }, [id]);
 
@@ -20,20 +23,22 @@ const UserForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError(null);  // Reset error state before making the API call
         if (id) {
             updateUserById(id, user)
                 .then(() => navigate('/users'))
-                .catch(console.error);
+                .catch((err) => setError(`Failed to update user: ${err}`));
         } else {
-            createUserSelfOnboarding(user)  // Pass id only if updating
+            createUserSelfOnboarding(user)
                 .then(() => navigate('/login'))
-                .catch(console.error);
+                .catch((err) => setError(`Failed to create user : ${err}`));
         }
     };
 
     return (
         <div className="container mt-5">
             <h1>{id ? 'Edit User' : 'Create User'}</h1>
+            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Username</label>
