@@ -31,6 +31,16 @@ export const fetchAllAmmonites = () => {
     });
 };
 
+export const fetchTaxonomyOptions = (level, parent = null) => {
+    const params = parent ? { parent } : {};
+    return client.get(`/ammonites/taxonomy/${level}`, { params })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Error fetching taxonomy ${level} options:`, error);
+            throw error;
+        });
+};
+
 export const fetchAmmoniteById = (id) => {
   return client.get(`/ammonites/${id}`)
     .then(response => response.data)
@@ -47,6 +57,15 @@ export const fetchMatchingAmmonites = (filters) => {
       console.error('Error fetching matching ammonites:', error);
       throw error;
     });
+};
+
+export const fetchBrowseAmmonites = (filters) => {
+    return client.get('/ammonites/browse', { params: filters })
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error fetching ammonites:', error);
+            throw error;
+        });
 };
 
 export const updateAmmoniteById = (id, editAmmonite) => {
