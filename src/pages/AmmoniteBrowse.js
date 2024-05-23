@@ -13,7 +13,9 @@ function AmmoniteBrowse() {
     taxonomyGenus: '',
     taxonomySubgenus: '',
     taxonomySpecies: '',
-    strata: ''
+    strata: '',
+    description: '',
+    comment: ''
   });
   const [options, setOptions] = useState({
     subclasses: [],
@@ -240,7 +242,28 @@ function AmmoniteBrowse() {
                 onChange={handleFilterChange}
             />
           </div>
-          <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <input
+                type="text"
+                name="description"
+                id="description"
+                className="form-control"
+                value={filters.description}
+                onChange={handleFilterChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="comment">Comment:</label>
+            <input
+                type="text"
+                name="comment"
+                id="comment"
+                className="form-control"
+                value={filters.comment}
+                onChange={handleFilterChange}
+            />
+          </div>          <button className="btn btn-primary" onClick={handleSearch}>Search</button>
         </div>
         <div className="table-responsive d-none d-md-block">
           <table className="table table-striped table-bordered">
