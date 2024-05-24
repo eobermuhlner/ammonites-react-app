@@ -5,7 +5,8 @@ import AmmoniteSearch from './pages/AmmoniteSearch';
 import AmmoniteViewer from './pages/AmmoniteViewer';
 import DataImport from './pages/DataImport';
 import UserList from './pages/UserList';
-import UserForm from './pages/UserForm';
+import CreateUserForm from './pages/CreateUserForm';
+import EditUserForm from './pages/EditUserForm';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
@@ -60,13 +61,13 @@ function App() {
                     />
                     <Route
                         path="/users/new"
-                        element={<UserForm />}
+                        element={<CreateUserForm />}
                     />
                     <Route
                         path="/users/:id"
                         element={
                             <PrivateRoute isAuthenticated={isAuthenticated}>
-                                <UserForm />
+                                <EditUserForm />
                             </PrivateRoute>
                         }
                     />

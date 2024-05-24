@@ -185,6 +185,19 @@ export const updateUserById = (id, user) => {
         });
 };
 
+export const changeUserPassword = (id, password) => {
+    return client.put(`/users/${id}/password`, JSON.stringify({ password: password }), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Failed to change password for user with id ${id}:`, error);
+            throw error;
+        });
+};
+
 export const deleteUserById = (id) => {
     return client.delete(`/users/${id}`)
         .then(response => {

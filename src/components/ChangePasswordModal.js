@@ -15,6 +15,10 @@ const ChangePasswordModal = ({ show, handleClose, handleChangePassword }) => {
         handleClose();
     };
 
+    const handleCancel = () => {
+        handleClose();
+    };
+
     if (!show) {
         return null;
     }
@@ -50,7 +54,10 @@ const ChangePasswordModal = ({ show, handleClose, handleChangePassword }) => {
                                 />
                             </div>
                             {error && <div className="alert alert-danger">{error}</div>}
-                            <button type="submit" className="btn btn-primary">Change Password</button>
+                            <div className="d-flex justify-content-end">
+                                <button type="submit" className="btn btn-primary">Save</button>
+                                <button type="button" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+                            </div>
                         </form>
                     </div>
                 </div>
