@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchUserById, updateUserById, changeUserPassword } from '../services/api';
+import { fetchUserById, updateUserById, changeUserPassword, addUserRole, removeUserRole, fetchAllRoles } from '../services/api';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 
 const EditUserForm = () => {
-    const [user, setUser] = useState({ username: '', enabled: true });
+    const [user, setUser] = useState({ username: '', enabled: true, roles: [] });
+    const [roles, setRoles] = useState([]);
+    const [selectedRole, setSelectedRole] = useState('');
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const { id } = useParams();
@@ -12,8 +14,16 @@ const EditUserForm = () => {
 
     useEffect(() => {
         fetchUserById(id)
-            .then(setUser)
+            .then((userData) => {
+                setUser((prevUser) => ({ ...prevUser, ...userData, roles: userData.roles || [] }));
+            })
             .catch((err) => setError(`Failed to fetch user data: ${err}`));
+
+        fetchAllRoles()
+            .then((rolesData) => {
+                setRoles(rolesData || []);
+            })
+            .catch((err) => setError(`Failed to fetch roles: ${err}`));
     }, [id]);
 
     const handleChange = (e) => {
@@ -35,6 +45,20 @@ const EditUserForm = () => {
     const handleChangePassword = (newPassword) => {
         changeUserPassword(id, newPassword)
             .catch((err) => setError(`Failed to update password: ${err}`));
+    };
+
+    const handleAddRole = () => {
+        if (selectedRole) {
+            addUserRole(id, selectedRole)
+                .then(() => setUser((prevUser) => ({ ...prevUser, roles: [...prevUser.roles, selectedRole] })))
+                .catch((err) => setError(`Failed to add role: ${err}`));
+        }
+    };
+
+    const handleRemoveRole = (role) => {
+        removeUserRole(id, role)
+            .then(() => setUser((prevUser) => ({ ...prevUser, roles: prevUser.roles.filter(r => r !== role) })))
+            .catch((err) => setError(`Failed to remove role: ${err}`));
     };
 
     const handleCancel = () => {
@@ -72,6 +96,32 @@ const EditUserForm = () => {
                     <label className="form-check-label" htmlFor="enabledCheck">
                         Enabled
                     </label>
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Roles</label>
+                    <ul className="list-group mb-3">
+                        {user.roles.map((role, index) => (
+                            <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                                {role}
+                                <button type="button" className="btn btn-danger btn-sm" onClick={() => handleRemoveRole(role)}>
+                                    Remove
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                    <select
+                        className="form-select"
+                        value={selectedRole}
+                        onChange={(e) => setSelectedRole(e.target.value)}
+                    >
+                        <option value="">Select a role to add</option>
+                        {roles.map((role) => (
+                            <option key={role.id} value={role.name}>{role.name}</option>
+                        ))}
+                    </select>
+                    <button type="button" className="btn btn-primary mt-2" onClick={handleAddRole}>
+                        Add Role
+                    </button>
                 </div>
                 <div className="d-flex justify-content-end">
                     <button type="submit" className="btn btn-primary">Save</button>

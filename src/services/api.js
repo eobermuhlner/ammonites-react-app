@@ -22,6 +22,14 @@ client.interceptors.request.use(
     }
 );
 
+export const fetchUserRoles = () => {
+    return client.get('/users/roles')
+        .then(response => response.data)
+        .catch(error => {
+            return [];
+        });
+};
+
 export const fetchAllAmmonites = () => {
   return client.get('/ammonites')
     .then(response => response.data)
@@ -217,6 +225,42 @@ export const createDefaultUser = () => {
         .then(response => response.data)
         .catch(error => {
             console.error('Error creating default user:', error);
+            throw error;
+        });
+};
+
+export const addUserRole = (userId, roleName) => {
+    return client.post(`/users/${userId}/roles`, JSON.stringify(roleName), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Failed to add role ${roleName} to user with id ${userId}:`, error);
+            throw error;
+        });
+};
+
+export const removeUserRole = (userId, roleName) => {
+    return client.delete(`/users/${userId}/roles`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(roleName)
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Failed to remove role ${roleName} from user with id ${userId}:`, error);
+            throw error;
+        });
+};
+
+export const fetchAllRoles = () => {
+    return client.get('/roles')
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error fetching all roles:', error);
             throw error;
         });
 };

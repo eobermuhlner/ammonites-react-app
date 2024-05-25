@@ -1,8 +1,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-const PrivateRoute = ({ isAuthenticated, children }) => {
-    return isAuthenticated ? children : <Navigate to="/login" />;
+const PrivateRoute = ({ children, isAuthenticated, hasRole, roleRequired }) => {
+    if (!isAuthenticated) {
+        return <Navigate to="/login" />;
+    }
+    if (roleRequired && !hasRole(roleRequired)) {
+        return <Navigate to="/" />;
+    }
+    return children;
 };
 
 export default PrivateRoute;

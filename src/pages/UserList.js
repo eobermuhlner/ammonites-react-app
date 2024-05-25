@@ -19,17 +19,29 @@ const UserList = () => {
         <div className="container mt-4">
             <h1 className="mb-4">User List</h1>
             <Link to="/users/new" className="btn btn-primary mb-3">Create User</Link>
-            <ul className="list-group">
+            <table className="table">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Enabled</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
                 {users.map(user => (
-                    <li key={user.id} className="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{user.username}</span>
-                        <div>
+                    <tr key={user.id}>
+                        <td>{user.username}</td>
+                        <td>{user.enabled ? 'Yes' : 'No'}</td>
+                        <td>{user.roles.join(', ')}</td>
+                        <td>
                             <Link to={`/users/${user.id}`} className="btn btn-secondary btn-sm mr-2">Edit</Link>
                             <button onClick={() => handleDelete(user.id)} className="btn btn-danger btn-sm">Delete</button>
-                        </div>
-                    </li>
+                        </td>
+                    </tr>
                 ))}
-            </ul>
+                </tbody>
+            </table>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { fetchUserRoles } from './services/api';
 import AmmoniteBrowse from './pages/AmmoniteBrowse';
 import AmmoniteSearch from './pages/AmmoniteSearch';
 import AmmoniteViewer from './pages/AmmoniteViewer';
@@ -13,6 +14,7 @@ import PrivateRoute from './components/PrivateRoute';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [roles, setRoles] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -21,9 +23,21 @@ function App() {
         }
     }, []);
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            const getRoles = async () => {
+                const userRoles = await fetchUserRoles();
+                setRoles(userRoles);
+            };
+            getRoles();
+        }
+    }, [ isAuthenticated ]);
+
+    const hasRole = (role) => roles && roles.includes(role);
+
     return (
         <Router>
-            <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+            <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} hasRole={hasRole}/>
             <div className="container mt-3">
                 <Routes>
                     <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
@@ -46,7 +60,7 @@ function App() {
                     <Route
                         path="/import"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute isAuthenticated={isAuthenticated} hasRole={hasRole} roleRequired="ADMIN">
                                 <DataImport />
                             </PrivateRoute>
                         }
@@ -54,7 +68,7 @@ function App() {
                     <Route
                         path="/users"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute isAuthenticated={isAuthenticated} hasRole={hasRole} roleRequired="ADMIN">
                                 <UserList />
                             </PrivateRoute>
                         }

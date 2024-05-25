@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Navbar({ isAuthenticated, setIsAuthenticated }) {
+function Navbar({ isAuthenticated, setIsAuthenticated, hasRole }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -27,12 +27,16 @@ function Navbar({ isAuthenticated, setIsAuthenticated }) {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/search">Search</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/import">Import</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/users">Users</Link>
-                                </li>
+                                {hasRole('ADMIN') && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/import">Import</Link>
+                                    </li>
+                                )}
+                                {hasRole('ADMIN') && (
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/users">Users</Link>
+                                    </li>
+                                )}
                                 <li className="nav-item">
                                     <button className="nav-link btn" onClick={handleLogout}>Logout</button>
                                 </li>
