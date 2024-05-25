@@ -23,6 +23,9 @@ const UserList = () => {
                 <thead>
                 <tr>
                     <th>Username</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Enabled</th>
                     <th>Roles</th>
                     <th>Actions</th>
@@ -32,6 +35,9 @@ const UserList = () => {
                 {users.map(user => (
                     <tr key={user.id}>
                         <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>{user.firstName}</td>
+                        <td>{user.lastName}</td>
                         <td>{user.enabled ? 'Yes' : 'No'}</td>
                         <td>{user.roles.join(', ')}</td>
                         <td>

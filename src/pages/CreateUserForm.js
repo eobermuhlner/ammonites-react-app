@@ -3,7 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { createUserSelfOnboarding } from '../services/api';
 
 const CreateUserForm = () => {
-    const [user, setUser] = useState({ username: '', enabled: true });
+    const [user, setUser] = useState({
+        username: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        enabled: true
+    });
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
@@ -52,6 +58,39 @@ const CreateUserForm = () => {
                         type="text"
                         name="username"
                         value={user.username}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={user.email}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">First Name</label>
+                    <input
+                        type="text"
+                        name="firstName"
+                        value={user.firstName}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Last Name</label>
+                    <input
+                        type="text"
+                        name="lastName"
+                        value={user.lastName}
                         onChange={handleChange}
                         className="form-control"
                         required

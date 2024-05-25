@@ -4,7 +4,14 @@ import { fetchUserById, updateUserById, changeUserPassword, addUserRole, removeU
 import ChangePasswordModal from '../components/ChangePasswordModal';
 
 const EditUserForm = () => {
-    const [user, setUser] = useState({ username: '', enabled: true, roles: [] });
+    const [user, setUser] = useState({
+        username: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        enabled: true,
+        roles: []
+    });
     const [roles, setRoles] = useState([]);
     const [selectedRole, setSelectedRole] = useState('');
     const [error, setError] = useState(null);
@@ -76,6 +83,39 @@ const EditUserForm = () => {
                         type="text"
                         name="username"
                         value={user.username}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={user.email}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">First Name</label>
+                    <input
+                        type="text"
+                        name="firstName"
+                        value={user.firstName}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Last Name</label>
+                    <input
+                        type="text"
+                        name="lastName"
+                        value={user.lastName}
                         onChange={handleChange}
                         className="form-control"
                         required
