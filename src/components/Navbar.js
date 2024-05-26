@@ -30,17 +30,24 @@ function Navbar({ isAuthenticated, setIsAuthenticated, hasRole }) {
                                     <Link className="nav-link" to="/search">{t('navbar.search')}</Link>
                                 </li>
                                 {hasRole('ADMIN') && (
-                                    <li className="nav-item">
-                                        <Link className="nav-link" to="/import">{t('navbar.import')}</Link>
-                                    </li>
+                                    <>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/import">{t('navbar.import')}</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/users">{t('navbar.users')}</Link>
+                                        </li>
+                                    </>
                                 )}
-                                {hasRole('ADMIN') && (
-                                    <li className="nav-item">
-                                        <Link className="nav-link" to="/users">{t('navbar.users')}</Link>
-                                    </li>
-                                )}
-                                <li className="nav-item">
-                                    <button className="nav-link btn" onClick={handleLogout}>{t('navbar.logout')}</button>
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {t('navbar.account')}
+                                    </a>
+                                    <ul className="dropdown-menu" aria-labelledby="accountDropdown">
+                                        <li><Link className="dropdown-item" to="/users/me">{t('navbar.profile')}</Link></li>
+                                        <li><hr className="dropdown-divider" /></li>
+                                        <li><button className="dropdown-item" onClick={handleLogout}>{t('navbar.logout')}</button></li>
+                                    </ul>
                                 </li>
                             </>
                         ) : (

@@ -30,6 +30,41 @@ export const fetchUserRoles = () => {
         });
 };
 
+export const fetchCurrentUser = () => {
+    return client.get('/users/me')
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error fetching current user:', error);
+            throw error;
+        });
+};
+
+export const updateCurrentUser = (user) => {
+    return client.put('/users/me', JSON.stringify(user), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Failed to update current user:', error);
+            throw error;
+        });
+};
+
+export const changeCurrentUserPassword = (password) => {
+    return client.put(`/users/me/password`, JSON.stringify({ password: password }), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error(`Failed to change password for current user:`, error);
+            throw error;
+        });
+};
+
 export const fetchAllAmmonites = () => {
   return client.get('/ammonites')
     .then(response => response.data)

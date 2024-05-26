@@ -80,6 +80,10 @@ function App() {
                             element={<CreateUserForm />}
                         />
                         <Route
+                            path="/users/me"
+                            element={<EditUserForm />}
+                        />
+                        <Route
                             path="/users/:id"
                             element={
                                 <PrivateRoute isAuthenticated={isAuthenticated}>

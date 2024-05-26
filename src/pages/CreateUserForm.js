@@ -120,19 +120,6 @@ const CreateUserForm = () => {
                         required
                     />
                 </div>
-                <div className="mb-3 form-check">
-                    <input
-                        type="checkbox"
-                        name="enabled"
-                        checked={user.enabled}
-                        onChange={(e) => setUser({ ...user, enabled: e.target.checked })}
-                        className="form-check-input"
-                        id="enabledCheck"
-                    />
-                    <label className="form-check-label" htmlFor="enabledCheck">
-                        {t('createUserForm.enabled')}
-                    </label>
-                </div>
                 <div className="d-flex justify-content-end">
                     <button type="submit" className="btn btn-primary">{t('createUserForm.save')}</button>
                     <button type="button" className="btn btn-danger" onClick={handleCancel}>{t('createUserForm.cancel')}</button>

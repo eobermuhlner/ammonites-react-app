@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchUserById, updateUserById, changeUserPassword, addUserRole, removeUserRole, fetchAllRoles } from '../services/api';
+import { fetchUserById, fetchCurrentUser, updateUserById, updateCurrentUser, changeUserPassword, changeCurrentUserPassword, addUserRole, removeUserRole, fetchAllRoles } from '../services/api';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 import { useTranslation } from 'react-i18next';
 
@@ -17,14 +17,18 @@ const EditUserForm = () => {
     const [selectedRole, setSelectedRole] = useState('');
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [isCurrentUser, setIsCurrentUser] = useState(false); // State to track if editing current user
     const { id } = useParams();
     const navigate = useNavigate();
     const { t, ready } = useTranslation();
 
     useEffect(() => {
-        fetchUserById(id)
+        const fetchUser = id ? fetchUserById : fetchCurrentUser;
+
+        fetchUser(id)
             .then((userData) => {
                 setUser((prevUser) => ({ ...prevUser, ...userData, roles: userData.roles || [] }));
+                if (!id) setIsCurrentUser(true); // Set isCurrentUser to true if no id is provided
             })
             .catch((err) => setError(t('editUserForm.errorFetchUser', { error: err })));
 
@@ -46,14 +50,25 @@ const EditUserForm = () => {
         const updatedUser = { ...user };
         delete updatedUser.password;  // Ensure password is not sent in the user update
 
-        updateUserById(id, updatedUser)
-            .then(() => navigate('/users'))
-            .catch((err) => setError(t('editUserForm.errorUpdateUser', { error: err })));
+        if (isCurrentUser) {
+            updateCurrentUser(updatedUser)
+                .then(() => navigate('/users'))
+                .catch((err) => setError(t('editUserForm.errorUpdateUser', { error: err })));
+        } else {
+            updateUserById(id, updatedUser)
+                .then(() => navigate('/users'))
+                .catch((err) => setError(t('editUserForm.errorUpdateUser', { error: err })));
+        }
     };
 
     const handleChangePassword = (newPassword) => {
-        changeUserPassword(id, newPassword)
-            .catch((err) => setError(t('editUserForm.errorUpdatePassword', { error: err })));
+        if (isCurrentUser) {
+            changeCurrentUserPassword(newPassword)
+                .catch((err) => setError(t('editUserForm.errorUpdatePassword', { error: err })));
+        } else {
+            changeUserPassword(id, newPassword)
+                .catch((err) => setError(t('editUserForm.errorUpdatePassword', { error: err })));
+        }
     };
 
     const handleAddRole = () => {
@@ -128,45 +143,49 @@ const EditUserForm = () => {
                 <button type="button" className="btn btn-secondary mb-3" onClick={() => setShowModal(true)}>
                     {t('editUserForm.changePassword')}
                 </button>
-                <div className="mb-3 form-check">
-                    <input
-                        type="checkbox"
-                        name="enabled"
-                        checked={user.enabled}
-                        onChange={(e) => setUser({ ...user, enabled: e.target.checked })}
-                        className="form-check-input"
-                        id="enabledCheck"
-                    />
-                    <label className="form-check-label" htmlFor="enabledCheck">
-                        {t('editUserForm.enabled')}
-                    </label>
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">{t('editUserForm.roles')}</label>
-                    <ul className="list-group mb-3">
-                        {user.roles.map((role, index) => (
-                            <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                {role}
-                                <button type="button" className="btn btn-danger btn-sm" onClick={() => handleRemoveRole(role)}>
-                                    {t('editUserForm.removeRole')}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                    <select
-                        className="form-select"
-                        value={selectedRole}
-                        onChange={(e) => setSelectedRole(e.target.value)}
-                    >
-                        <option value="">{t('editUserForm.selectRole')}</option>
-                        {roles.map((role) => (
-                            <option key={role.id} value={role.name}>{role.name}</option>
-                        ))}
-                    </select>
-                    <button type="button" className="btn btn-primary mt-2" onClick={handleAddRole}>
-                        {t('editUserForm.addRole')}
-                    </button>
-                </div>
+                {!isCurrentUser && (
+                    <div className="mb-3 form-check">
+                        <input
+                            type="checkbox"
+                            name="enabled"
+                            checked={user.enabled}
+                            onChange={(e) => setUser({ ...user, enabled: e.target.checked })}
+                            className="form-check-input"
+                            id="enabledCheck"
+                        />
+                        <label className="form-check-label" htmlFor="enabledCheck">
+                            {t('editUserForm.enabled')}
+                        </label>
+                    </div>
+                )}
+                {!isCurrentUser && (
+                    <div className="mb-3">
+                        <label className="form-label">{t('editUserForm.roles')}</label>
+                        <ul className="list-group mb-3">
+                            {user.roles.map((role, index) => (
+                                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
+                                    {role}
+                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => handleRemoveRole(role)}>
+                                        {t('editUserForm.removeRole')}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        <select
+                            className="form-select"
+                            value={selectedRole}
+                            onChange={(e) => setSelectedRole(e.target.value)}
+                        >
+                            <option value="">{t('editUserForm.selectRole')}</option>
+                            {roles.map((role) => (
+                                <option key={role.id} value={role.name}>{role.name}</option>
+                            ))}
+                        </select>
+                        <button type="button" className="btn btn-primary mt-2" onClick={handleAddRole}>
+                            {t('editUserForm.addRole')}
+                        </button>
+                    </div>
+                )}
                 <div className="d-flex justify-content-end">
                     <button type="submit" className="btn btn-primary">{t('editUserForm.save')}</button>
                     <button type="button" className="btn btn-danger" onClick={handleCancel}>{t('editUserForm.cancel')}</button>
