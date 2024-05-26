@@ -4,6 +4,7 @@ import { fetchMatchingAmmonites } from '../services/api';
 import ImageViewerComponent from '../components/ImageViewerComponent';
 import ImageMeasure from '../components/ImageMeasure';
 import './AmmoniteSearch.css';
+import { useTranslation } from 'react-i18next';
 
 function DistanceAsMatchPercentage({ x }) {
     const percentage = (1.0 - x) * 100;
@@ -26,6 +27,7 @@ function AmmoniteSearch() {
     });
     const [results, setResults] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (filters.diameterSide && filters.diameterCross) {
@@ -74,7 +76,7 @@ function AmmoniteSearch() {
     const handleSearch = async () => {
         setResults([]);
         fetchMatchingAmmonites(filters)
-          .then(setResults);
+            .then(setResults);
     };
 
     const handleImageChange = (event) => {
@@ -109,24 +111,24 @@ function AmmoniteSearch() {
     const AmmoniteMeasurementCard = ({ result }) => (
         <div className="card d-md-none mb-4">
             <div className="card-header">
-                <div><strong>Species:</strong> {result.ammonite.taxonomySpecies}</div>
+                <div><strong>{t('ammoniteSearch.species')}:</strong> {result.ammonite.taxonomySpecies}</div>
                 <DistanceAsMatchPercentage x={result.distance} />
             </div>
             <div className="card-body">
                 <div><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></div>
-                <div><strong>Strata:</strong> {result.ammonite.strata}</div>
-                <div><strong>Diameter Side:</strong> {result.measurement.diameterSide}</div>
-                <div><strong>Diameter Cross:</strong> {result.measurement.diameterCross}</div>
-                <div><strong>N:</strong> {result.measurement.proportionN}</div>
-                <div><strong>H:</strong> {result.measurement.proportionH}</div>
-                <div><strong>B:</strong> {result.measurement.proportionB}</div>
-                <div><strong>Q:</strong> {result.measurement.proportionQ}</div>
-                <div><strong>Primary Ribs:</strong> {result.measurement.countPrimaryRibs}</div>
-                <div><strong>Secondary Ribs:</strong> {result.measurement.countSecondaryRibs}</div>
-                <div><strong>Rib Division Ratio:</strong> {result.measurement.ribDivisionRatio}</div>
+                <div><strong>{t('ammoniteSearch.strata')}:</strong> {result.ammonite.strata}</div>
+                <div><strong>{t('ammoniteSearch.diameterSide')}:</strong> {result.measurement.diameterSide}</div>
+                <div><strong>{t('ammoniteSearch.diameterCross')}:</strong> {result.measurement.diameterCross}</div>
+                <div><strong>{t('ammoniteSearch.proportionN')}:</strong> {result.measurement.proportionN}</div>
+                <div><strong>{t('ammoniteSearch.proportionH')}:</strong> {result.measurement.proportionH}</div>
+                <div><strong>{t('ammoniteSearch.proportionB')}:</strong> {result.measurement.proportionB}</div>
+                <div><strong>{t('ammoniteSearch.proportionQ')}:</strong> {result.measurement.proportionQ}</div>
+                <div><strong>{t('ammoniteSearch.countPrimaryRibs')}:</strong> {result.measurement.countPrimaryRibs}</div>
+                <div><strong>{t('ammoniteSearch.countSecondaryRibs')}:</strong> {result.measurement.countSecondaryRibs}</div>
+                <div><strong>{t('ammoniteSearch.ribDivisionRatio')}:</strong> {result.measurement.ribDivisionRatio}</div>
                 <div><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></div>
                 <Link to={`/ammonite/${result.ammonite.id}`}>
-                    <button className="btn btn-sm btn-info mt-2">View</button>
+                    <button className="btn btn-sm btn-info mt-2">{t('ammoniteSearch.view')}</button>
                 </Link>
             </div>
         </div>
@@ -134,7 +136,7 @@ function AmmoniteSearch() {
 
     return (
         <div className="container">
-            <h1 className="text-center my-4">Search</h1>
+            <h1 className="text-center my-4">{t('ammoniteSearch.title')}</h1>
             <div className="row justify-content-center">
                 <div className="col-12 text-center">
                     <input type="file" onChange={handleImageChange} className="form-control mb-3" />
@@ -156,174 +158,174 @@ function AmmoniteSearch() {
             <div className="row justify-content-center mt-4">
                 <div className="col-12">
                     <div className="form-group">
-                        <label htmlFor="diameterSide">Diameter Side:</label>
+                        <label htmlFor="diameterSide">{t('ammoniteSearch.diameterSide')}:</label>
                         <input
                             type="text"
                             name="diameterSide"
-                            placeholder="Diameter Side"
+                            placeholder={t('ammoniteSearch.diameterSide')}
                             value={filters.diameterSide}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="diameterCross">Diameter Cross:</label>
+                        <label htmlFor="diameterCross">{t('ammoniteSearch.diameterCross')}:</label>
                         <input
                             type="text"
                             name="diameterCross"
-                            placeholder="Diameter Cross"
+                            placeholder={t('ammoniteSearch.diameterCross')}
                             value={filters.diameterCross}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="proportionN">Proportion N:</label>
+                        <label htmlFor="proportionN">{t('ammoniteSearch.proportionN')}:</label>
                         <input
                             type="text"
                             name="proportionN"
-                            placeholder="Proportion N"
+                            placeholder={t('ammoniteSearch.proportionN')}
                             value={filters.proportionN}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="proportionH">Proportion H:</label>
+                        <label htmlFor="proportionH">{t('ammoniteSearch.proportionH')}:</label>
                         <input
                             type="text"
                             name="proportionH"
-                            placeholder="Proportion H"
+                            placeholder={t('ammoniteSearch.proportionH')}
                             value={filters.proportionH}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="proportionB">Proportion B:</label>
+                        <label htmlFor="proportionB">{t('ammoniteSearch.proportionB')}:</label>
                         <input
                             type="text"
                             name="proportionB"
-                            placeholder="Proportion B"
+                            placeholder={t('ammoniteSearch.proportionB')}
                             value={filters.proportionB}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="proportionQ">Proportion Q:</label>
+                        <label htmlFor="proportionQ">{t('ammoniteSearch.proportionQ')}:</label>
                         <input
                             type="text"
                             name="proportionQ"
-                            placeholder="Proportion Q"
+                            placeholder={t('ammoniteSearch.proportionQ')}
                             value={filters.proportionQ}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="countPrimaryRibs">Count Primary Ribs:</label>
+                        <label htmlFor="countPrimaryRibs">{t('ammoniteSearch.countPrimaryRibs')}:</label>
                         <input
                             type="text"
                             name="countPrimaryRibs"
-                            placeholder="Primary Ribs"
+                            placeholder={t('ammoniteSearch.countPrimaryRibs')}
                             value={filters.countPrimaryRibs}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="countSecondaryRibs">Count Secondary Ribs:</label>
+                        <label htmlFor="countSecondaryRibs">{t('ammoniteSearch.countSecondaryRibs')}:</label>
                         <input
                             type="text"
                             name="countSecondaryRibs"
-                            placeholder="Secondary Ribs"
+                            placeholder={t('ammoniteSearch.countSecondaryRibs')}
                             value={filters.countSecondaryRibs}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="ribDivisionRatio">Rib Division Ratio:</label>
+                        <label htmlFor="ribDivisionRatio">{t('ammoniteSearch.ribDivisionRatio')}:</label>
                         <input
                             type="text"
                             name="ribDivisionRatio"
-                            placeholder="Rib Division Ratio"
+                            placeholder={t('ammoniteSearch.ribDivisionRatio')}
                             value={filters.ribDivisionRatio}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="turns">Turns:</label>
+                        <label htmlFor="turns">{t('ammoniteSearch.turns')}:</label>
                         <input
                             type="text"
                             name="turns"
-                            placeholder="Turns"
+                            placeholder={t('ammoniteSearch.turns')}
                             value={filters.turns}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="limit">Result Limit:</label>
+                        <label htmlFor="limit">{t('ammoniteSearch.limit')}:</label>
                         <input
                             type="number"
                             name="limit"
-                            placeholder="Result Limit"
+                            placeholder={t('ammoniteSearch.limit')}
                             value={filters.limit}
                             onChange={handleInputChange}
                             className="form-control mb-2"
                         />
                     </div>
-                    <button onClick={handleSearch} className="btn btn-primary">Search</button>
+                    <button onClick={handleSearch} className="btn btn-primary">{t('ammoniteSearch.search')}</button>
                 </div>
             </div>
             <div className="table-responsive mt-4 d-none d-md-block">
                 <table className="table table-bordered table-striped">
                     <thead className="thead-dark">
-                        <tr>
-                            <th>Match</th>
-                            <th></th>
-                            <th>Species</th>
-                            <th>Strata</th>
-                            <th>Image</th>
-                            <th>Diameter Side</th>
-                            <th>Diameter Cross</th>
-                            <th>N</th>
-                            <th>H</th>
-                            <th>B</th>
-                            <th>Q</th>
-                            <th>Primary Ribs</th>
-                            <th>Secondary Ribs</th>
-                            <th>Rib Division Ratio</th>
-                            <th>Measurement Image</th>
-                        </tr>
+                    <tr>
+                        <th>{t('ammoniteSearch.match')}</th>
+                        <th></th>
+                        <th>{t('ammoniteSearch.species')}</th>
+                        <th>{t('ammoniteSearch.strata')}</th>
+                        <th>{t('ammoniteSearch.image')}</th>
+                        <th>{t('ammoniteSearch.diameterSide')}</th>
+                        <th>{t('ammoniteSearch.diameterCross')}</th>
+                        <th>{t('ammoniteSearch.proportionN')}</th>
+                        <th>{t('ammoniteSearch.proportionH')}</th>
+                        <th>{t('ammoniteSearch.proportionB')}</th>
+                        <th>{t('ammoniteSearch.proportionQ')}</th>
+                        <th>{t('ammoniteSearch.countPrimaryRibs')}</th>
+                        <th>{t('ammoniteSearch.countSecondaryRibs')}</th>
+                        <th>{t('ammoniteSearch.ribDivisionRatio')}</th>
+                        <th>{t('ammoniteSearch.measurementImage')}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {results.map(result => (
-                            <tr key={result.ammonite.id}>
-                                <td><DistanceAsMatchPercentage x={result.distance} /></td>
-                                <td>
-                                    <Link to={`/ammonite/${result.ammonite.id}`}>
-                                        <button className="btn btn-sm btn-info">View</button>
-                                    </Link>
-                                </td>
-                                <td>{result.ammonite.taxonomySpecies}</td>
-                                <td>{result.ammonite.strata}</td>
-                                <td><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></td>
-                                <td>{result.measurement.diameterSide}</td>
-                                <td>{result.measurement.diameterCross}</td>
-                                <td>{result.measurement.proportionN}</td>
-                                <td>{result.measurement.proportionH}</td>
-                                <td>{result.measurement.proportionB}</td>
-                                <td>{result.measurement.proportionQ}</td>
-                                <td>{result.measurement.countPrimaryRibs}</td>
-                                <td>{result.measurement.countSecondaryRibs}</td>
-                                <td>{result.measurement.ribDivisionRatio}</td>
-                                <td><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></td>
-                            </tr>
-                        ))}
+                    {results.map(result => (
+                        <tr key={result.ammonite.id}>
+                            <td><DistanceAsMatchPercentage x={result.distance} /></td>
+                            <td>
+                                <Link to={`/ammonite/${result.ammonite.id}`}>
+                                    <button className="btn btn-sm btn-info">{t('ammoniteSearch.view')}</button>
+                                </Link>
+                            </td>
+                            <td>{result.ammonite.taxonomySpecies}</td>
+                            <td>{result.ammonite.strata}</td>
+                            <td><ImageViewerComponent imageId={result.ammonite.imageId} width={100} height={100} /></td>
+                            <td>{result.measurement.diameterSide}</td>
+                            <td>{result.measurement.diameterCross}</td>
+                            <td>{result.measurement.proportionN}</td>
+                            <td>{result.measurement.proportionH}</td>
+                            <td>{result.measurement.proportionB}</td>
+                            <td>{result.measurement.proportionQ}</td>
+                            <td>{result.measurement.countPrimaryRibs}</td>
+                            <td>{result.measurement.countSecondaryRibs}</td>
+                            <td>{result.measurement.ribDivisionRatio}</td>
+                            <td><ImageViewerComponent imageId={result.measurement.imageId} width={100} height={100} /></td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>

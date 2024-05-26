@@ -263,7 +263,8 @@ function AmmoniteBrowse() {
                 value={filters.comment}
                 onChange={handleFilterChange}
             />
-          </div>          <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+          </div>
+          <button className="btn btn-primary" onClick={handleSearch}>Search</button>
         </div>
         <div className="table-responsive d-none d-md-block">
           <table className="table table-striped table-bordered">

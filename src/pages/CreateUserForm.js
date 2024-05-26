@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserSelfOnboarding } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 const CreateUserForm = () => {
     const [user, setUser] = useState({
@@ -14,6 +15,7 @@ const CreateUserForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,14 +35,14 @@ const CreateUserForm = () => {
         setError(null);
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match.');
+            setError(t('createUserForm.passwordsDoNotMatch'));
             return;
         }
 
         const userData = { ...user, password };
         createUserSelfOnboarding(userData)
             .then(() => navigate('/login'))
-            .catch((err) => setError(`Failed to create user: ${err}`));
+            .catch((err) => setError(t('createUserForm.errorCreateUser', { error: err })));
     };
 
     const handleCancel = () => {
@@ -49,11 +51,11 @@ const CreateUserForm = () => {
 
     return (
         <div className="container mt-5">
-            <h1>Create User</h1>
+            <h1>{t('createUserForm.title')}</h1>
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">Username</label>
+                    <label className="form-label">{t('createUserForm.username')}</label>
                     <input
                         type="text"
                         name="username"
@@ -64,7 +66,7 @@ const CreateUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Email</label>
+                    <label className="form-label">{t('createUserForm.email')}</label>
                     <input
                         type="email"
                         name="email"
@@ -75,7 +77,7 @@ const CreateUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">First Name</label>
+                    <label className="form-label">{t('createUserForm.firstName')}</label>
                     <input
                         type="text"
                         name="firstName"
@@ -86,7 +88,7 @@ const CreateUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Last Name</label>
+                    <label className="form-label">{t('createUserForm.lastName')}</label>
                     <input
                         type="text"
                         name="lastName"
@@ -97,7 +99,7 @@ const CreateUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Password</label>
+                    <label className="form-label">{t('createUserForm.password')}</label>
                     <input
                         type="password"
                         name="password"
@@ -108,7 +110,7 @@ const CreateUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Confirm Password</label>
+                    <label className="form-label">{t('createUserForm.confirmPassword')}</label>
                     <input
                         type="password"
                         name="confirmPassword"
@@ -128,12 +130,12 @@ const CreateUserForm = () => {
                         id="enabledCheck"
                     />
                     <label className="form-check-label" htmlFor="enabledCheck">
-                        Enabled
+                        {t('createUserForm.enabled')}
                     </label>
                 </div>
                 <div className="d-flex justify-content-end">
-                    <button type="submit" className="btn btn-primary">Save</button>
-                    <button type="button" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+                    <button type="submit" className="btn btn-primary">{t('createUserForm.save')}</button>
+                    <button type="button" className="btn btn-danger" onClick={handleCancel}>{t('createUserForm.cancel')}</button>
                 </div>
             </form>
         </div>

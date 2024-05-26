@@ -1,13 +1,13 @@
-// ImageViewerComponent.jsx
-
 import React, { useState, useEffect } from 'react';
 import { fetchImageById, uploadImage } from '../services/api.js';
+import { useTranslation } from 'react-i18next';
 
 const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpdate }) => {
     const [imageSrc, setImageSrc] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [file, setFile] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (imageId) {
@@ -88,7 +88,7 @@ const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpd
                     zIndex: 1000
                 }} onClick={handleCloseModal}>
                     <div onClick={(e) => e.stopPropagation()}> {/* Stop propagation to prevent modal from closing */}
-                        <img src={imageSrc} alt="Full size" style={{
+                        <img src={imageSrc} alt={t('imageViewer.fullSizeAlt')} style={{
                             maxWidth: '90vw', // 90% of viewport width
                             maxHeight: '90vh', // 90% of viewport height
                             margin: 'auto',
@@ -98,11 +98,11 @@ const ImageViewerComponent = ({ imageId, width, height, isEditable, onImageIdUpd
                         {editMode ? (
                             <>
                                 <input type="file" onChange={handleFileChange} />
-                                <button onClick={handleSaveImage}>Save</button>
-                                <button onClick={() => setEditMode(false)}>Cancel</button>
+                                <button onClick={handleSaveImage}>{t('imageViewer.save')}</button>
+                                <button onClick={() => setEditMode(false)}>{t('imageViewer.cancel')}</button>
                             </>
                         ) : isEditable && (
-                            <button onClick={handleEditClick}>Edit Image</button>
+                            <button onClick={handleEditClick}>{t('imageViewer.editImage')}</button>
                         )}
                     </div>
                 </div>

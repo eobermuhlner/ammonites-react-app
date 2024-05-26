@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ChangePasswordModal = ({ show, handleClose, handleChangePassword }) => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {
-            setError('Passwords do not match.');
+            setError(t('changePasswordModal.passwordsDoNotMatch'));
             return;
         }
         handleChangePassword(newPassword);
@@ -28,13 +30,13 @@ const ChangePasswordModal = ({ show, handleClose, handleChangePassword }) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Change Password</h5>
+                        <h5 className="modal-title">{t('changePasswordModal.title')}</h5>
                         <button type="button" className="btn-close" onClick={handleClose}></button>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
-                                <label className="form-label">New Password</label>
+                                <label className="form-label">{t('changePasswordModal.newPassword')}</label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -44,7 +46,7 @@ const ChangePasswordModal = ({ show, handleClose, handleChangePassword }) => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Confirm Password</label>
+                                <label className="form-label">{t('changePasswordModal.confirmPassword')}</label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -55,8 +57,8 @@ const ChangePasswordModal = ({ show, handleClose, handleChangePassword }) => {
                             </div>
                             {error && <div className="alert alert-danger">{error}</div>}
                             <div className="d-flex justify-content-end">
-                                <button type="submit" className="btn btn-primary">Save</button>
-                                <button type="button" className="btn btn-danger" onClick={handleCancel}>Cancel</button>
+                                <button type="submit" className="btn btn-primary">{t('changePasswordModal.save')}</button>
+                                <button type="button" className="btn btn-danger" onClick={handleCancel}>{t('changePasswordModal.cancel')}</button>
                             </div>
                         </form>
                     </div>

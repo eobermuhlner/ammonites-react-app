@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login({ setIsAuthenticated }) {
@@ -8,6 +9,7 @@ function Login({ setIsAuthenticated }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { t, ready } = useTranslation();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -32,13 +34,15 @@ function Login({ setIsAuthenticated }) {
         }
     };
 
+    if (!ready) return <div>Loading...</div>;
+
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="card-title text-center">Login</h2>
+                            <h2 className="card-title text-center">{t('login.title')}</h2>
                             {error && <div className="alert alert-danger" role="alert">{error}</div>}
                             <form onSubmit={handleLogin}>
                                 <div className="mb-3">

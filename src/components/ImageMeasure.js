@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, turns, onUpdateN, onUpdateH }) {
   const imgRef = useRef(null);
@@ -14,6 +15,7 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, turns, onUpda
   const [draggingPoint, setDraggingPoint] = useState(null);
   const [N, setN] = useState(0);
   const [H, setH] = useState(0);
+  const { t } = useTranslation();
 
   // Initialize center and endpoint based on image size
   useEffect(() => {
@@ -104,15 +106,15 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, turns, onUpda
       const lineEndY = center.cy + radius * Math.sin(angle);
 
       lines.push(
-        <line
-          key={`purple-line-${i}`}
-          x1={center.cx}
-          y1={center.cy}
-          x2={lineEndX}
-          y2={lineEndY}
-          stroke="purple"
-          strokeWidth="1"
-        />
+          <line
+              key={`purple-line-${i}`}
+              x1={center.cx}
+              y1={center.cy}
+              x2={lineEndX}
+              y2={lineEndY}
+              stroke="purple"
+              strokeWidth="1"
+          />
       );
     }
     return lines;
@@ -162,26 +164,26 @@ function ImageMeasure({ imageUrl, width, height, countPrimaryRibs, turns, onUpda
   }
 
   return (
-    <div
-      style={{ width: '100%', height: '100%', position: 'relative' }}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      <img ref={imgRef} src={imageUrl} style={imageStyles} alt="Measure" />
-      <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-        <circle cx={center.cx} cy={center.cy} r={radius} stroke="green" strokeWidth="2" fill="transparent" />
-        <circle cx={center.cx} cy={center.cy} r={radius * pRib} stroke="purple" strokeWidth="2" fill="transparent" />
-        <polyline points={spiralPoints.join(' ')} fill="none" stroke="orange" strokeWidth="2" />
-        {renderPurpleLines(countPrimaryRibs, center, endpoint, radius)}
-        <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
-        <circle cx={center.cx} cy={center.cy} r="5" fill="red" onMouseDown={handleMouseDown({ type: 'center' })} />
-        <circle cx={endpoint.ex} cy={endpoint.ey} r="8" fill="red" onMouseDown={handleMouseDown({ type: 'endpoint' })} />
-        <circle cx={p1Position.x} cy={p1Position.y} r="5" fill="red" onMouseDown={handleMouseDown({ type: 'p1', func: setP1 })} />
-        <circle cx={p2Position.x} cy={p2Position.y} r="5" fill="yellow" onMouseDown={handleMouseDown({ type: 'p2', func: setP2 })} />
-        <circle cx={p3Position.x} cy={p3Position.y} r="5" fill="yellow" onMouseDown={handleMouseDown({ type: 'p3', func: setP3 })} />
-        <circle cx={pRibPosition.x} cy={pRibPosition.y} r="5" fill="purple" onMouseDown={handleMouseDown({ type: 'pRib', func: setPRib })} />
-      </svg>
-    </div>
+      <div
+          style={{ width: '100%', height: '100%', position: 'relative' }}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+      >
+        <img ref={imgRef} src={imageUrl} style={imageStyles} alt={t('imageMeasure.alt')} />
+        <svg ref={svgRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          <circle cx={center.cx} cy={center.cy} r={radius} stroke="green" strokeWidth="2" fill="transparent" />
+          <circle cx={center.cx} cy={center.cy} r={radius * pRib} stroke="purple" strokeWidth="2" fill="transparent" />
+          <polyline points={spiralPoints.join(' ')} fill="none" stroke="orange" strokeWidth="2" />
+          {renderPurpleLines(countPrimaryRibs, center, endpoint, radius)}
+          <line x1={otherx} y1={othery} x2={endpoint.ex} y2={endpoint.ey} stroke="blue" strokeWidth="2" markerEnd="url(#arrowhead)" />
+          <circle cx={center.cx} cy={center.cy} r="5" fill="red" onMouseDown={handleMouseDown({ type: 'center' })} />
+          <circle cx={endpoint.ex} cy={endpoint.ey} r="8" fill="red" onMouseDown={handleMouseDown({ type: 'endpoint' })} />
+          <circle cx={p1Position.x} cy={p1Position.y} r="5" fill="red" onMouseDown={handleMouseDown({ type: 'p1', func: setP1 })} />
+          <circle cx={p2Position.x} cy={p2Position.y} r="5" fill="yellow" onMouseDown={handleMouseDown({ type: 'p2', func: setP2 })} />
+          <circle cx={p3Position.x} cy={p3Position.y} r="5" fill="yellow" onMouseDown={handleMouseDown({ type: 'p3', func: setP3 })} />
+          <circle cx={pRibPosition.x} cy={pRibPosition.y} r="5" fill="purple" onMouseDown={handleMouseDown({ type: 'pRib', func: setPRib })} />
+        </svg>
+      </div>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { postImportAmmonites, postImportAmmoniteMeasurements } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 function DataImport() {
     const [csvFile, setCsvFile] = useState(null);
@@ -7,6 +8,7 @@ function DataImport() {
     const [responseMessage, setResponseMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [importType, setImportType] = useState('ammonites'); // default to "ammonites"
+    const { t } = useTranslation();
 
     const handleCsvFileChange = (event) => {
         setCsvFile(event.target.files[0]);
@@ -32,12 +34,12 @@ function DataImport() {
         setErrorMessage('');
         if (importType === 'ammonites') {
             postImportAmmonites(formData)
-              .then(setResponseMessage)
-              .catch(error => setErrorMessage(error.response ? error.response.data : error.message))
+                .then((response) => setResponseMessage(response.data))
+                .catch((error) => setErrorMessage(error.response ? error.response.data : error.message));
         } else {
             postImportAmmoniteMeasurements(formData)
-              .then(setResponseMessage)
-              .catch(error => setErrorMessage(error.response ? error.response.data : error.message))
+                .then((response) => setResponseMessage(response.data))
+                .catch((error) => setErrorMessage(error.response ? error.response.data : error.message));
         }
     };
 
@@ -45,7 +47,7 @@ function DataImport() {
         <div className="container">
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="csvFile">CSV or Excel File: </label>
+                    <label htmlFor="csvFile">{t('dataImport.csvFile')}</label>
                     <input
                         id="csvFile"
                         type="file"
@@ -55,7 +57,7 @@ function DataImport() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="imageFiles">Image Files:</label>
+                    <label htmlFor="imageFiles">{t('dataImport.imageFiles')}</label>
                     <input
                         id="imageFiles"
                         type="file"
@@ -66,13 +68,13 @@ function DataImport() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="importType">Import Type:</label>
+                    <label htmlFor="importType">{t('dataImport.importType')}</label>
                     <select id="importType" value={importType} onChange={handleImportTypeChange} className="form-control">
-                        <option value="ammonites">Ammonites</option>
-                        <option value="ammoniteMeasurements">Ammonite Measurements</option>
+                        <option value="ammonites">{t('dataImport.ammonites')}</option>
+                        <option value="ammoniteMeasurements">{t('dataImport.ammoniteMeasurements')}</option>
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">Upload Files</button>
+                <button type="submit" className="btn btn-primary">{t('dataImport.uploadFiles')}</button>
             </form>
             {responseMessage && <pre className="alert alert-success mt-3">{responseMessage}</pre>}
             {errorMessage && <pre className="alert alert-danger mt-3">{errorMessage}</pre>}
