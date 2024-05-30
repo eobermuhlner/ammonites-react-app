@@ -162,7 +162,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="diameterSide"
-                            placeholder={t('ammoniteSearch.diameterSide')}
+                            placeholder={t('ammoniteSearch.diameterSide.placeholder')}
                             value={filters.diameterSide}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -173,7 +173,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="diameterCross"
-                            placeholder={t('ammoniteSearch.diameterCross')}
+                            placeholder={t('ammoniteSearch.diameterCross.placeholder')}
                             value={filters.diameterCross}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -184,7 +184,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="proportionN"
-                            placeholder={t('ammoniteSearch.proportionN')}
+                            placeholder={t('ammoniteSearch.proportionN.placeholder')}
                             value={filters.proportionN}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -195,7 +195,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="proportionH"
-                            placeholder={t('ammoniteSearch.proportionH')}
+                            placeholder={t('ammoniteSearch.proportionH.placeholder')}
                             value={filters.proportionH}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -206,7 +206,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="proportionB"
-                            placeholder={t('ammoniteSearch.proportionB')}
+                            placeholder={t('ammoniteSearch.proportionB.placeholder')}
                             value={filters.proportionB}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -217,7 +217,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="proportionQ"
-                            placeholder={t('ammoniteSearch.proportionQ')}
+                            placeholder={t('ammoniteSearch.proportionQ.placeholder')}
                             value={filters.proportionQ}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -228,7 +228,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="countPrimaryRibs"
-                            placeholder={t('ammoniteSearch.countPrimaryRibs')}
+                            placeholder={t('ammoniteSearch.countPrimaryRibs.placeholder')}
                             value={filters.countPrimaryRibs}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -239,7 +239,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="countSecondaryRibs"
-                            placeholder={t('ammoniteSearch.countSecondaryRibs')}
+                            placeholder={t('ammoniteSearch.countSecondaryRibs.placeholder')}
                             value={filters.countSecondaryRibs}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -250,7 +250,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="ribDivisionRatio"
-                            placeholder={t('ammoniteSearch.ribDivisionRatio')}
+                            placeholder={t('ammoniteSearch.ribDivisionRatio.placeholder')}
                             value={filters.ribDivisionRatio}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -261,7 +261,7 @@ function AmmoniteSearch() {
                         <input
                             type="text"
                             name="turns"
-                            placeholder={t('ammoniteSearch.turns')}
+                            placeholder={t('ammoniteSearch.turns.placeholder')}
                             value={filters.turns}
                             onChange={handleInputChange}
                             className="form-control mb-2"
@@ -272,7 +272,7 @@ function AmmoniteSearch() {
                         <input
                             type="number"
                             name="limit"
-                            placeholder={t('ammoniteSearch.limit')}
+                            placeholder={t('ammoniteSearch.limit.placeholder')}
                             value={filters.limit}
                             onChange={handleInputChange}
                             className="form-control mb-2"
