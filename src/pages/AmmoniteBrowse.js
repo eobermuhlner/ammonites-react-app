@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchTaxonomyOptions, fetchBrowseAmmonites } from '../services/api';
 import ImageViewerComponent from '../components/ImageViewerComponent';
+import { useTranslation } from 'react-i18next';
 import './AmmoniteBrowse.css';
 
 function AmmoniteBrowse() {
@@ -24,6 +25,7 @@ function AmmoniteBrowse() {
     genera: [],
     subgenera: []
   });
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTaxonomyOptions('subclass').then(subclasses => setOptions(prev => ({ ...prev, subclasses })));
@@ -122,17 +124,17 @@ function AmmoniteBrowse() {
   const AmmoniteCard = ({ item }) => (
       <div className="card d-md-none mb-4">
         <div className="card-header">
-          <div><strong>Species:</strong> {item.taxonomySpecies}</div>
+          <div><strong>{t('entity.ammonite.species')}:</strong> {item.taxonomySpecies}</div>
         </div>
         <div className="card-body">
-          <div><strong>Subclass:</strong> {item.taxonomySubclass}</div>
-          <div><strong>Family:</strong> {item.taxonomyFamily}</div>
-          <div><strong>Subfamily:</strong> {item.taxonomySubfamily}</div>
-          <div><strong>Genus:</strong> {item.taxonomyGenus}</div>
-          <div><strong>Subgenus:</strong> {item.taxonomySubgenus}</div>
-          <div><strong>Strata:</strong> {item.strata}</div>
-          <div><strong>Description:</strong> {item.description}</div>
-          <div><strong>Comment:</strong> {item.comment}</div>
+          <div><strong>{t('entity.ammonite.subclass')}:</strong> {item.taxonomySubclass}</div>
+          <div><strong>{t('entity.ammonite.family')}:</strong> {item.taxonomyFamily}</div>
+          <div><strong>{t('entity.ammonite.subfamily')}:</strong> {item.taxonomySubfamily}</div>
+          <div><strong>{t('entity.ammonite.genus')}:</strong> {item.taxonomyGenus}</div>
+          <div><strong>{t('entity.ammonite.subgenus')}:</strong> {item.taxonomySubgenus}</div>
+          <div><strong>{t('entity.ammonite.strata')}:</strong> {item.strata}</div>
+          <div><strong>{t('entity.ammonite.description')}:</strong> {item.description}</div>
+          <div><strong>{t('entity.ammonite.comment')}:</strong> {item.comment}</div>
           <div><ImageViewerComponent imageId={item.imageId} width={100} height={100} /></div>
           <Link to={`/ammonite/${item.id}`}>
             <button className="btn btn-primary btn-sm">View</button>
@@ -143,10 +145,10 @@ function AmmoniteBrowse() {
 
   return (
       <div className="container">
-        <h1 className="my-4">Browse</h1>
+        <h1 className="my-4">{t('ammoniteBrowse.title')}</h1>
         <div className="mb-4">
           <div className="form-group">
-            <label htmlFor="taxonomySubclass">Subclass:</label>
+            <label htmlFor="taxonomySubclass">{t('entity.ammonite.subclass')}:</label>
             <select
                 name="taxonomySubclass"
                 id="taxonomySubclass"
@@ -154,14 +156,14 @@ function AmmoniteBrowse() {
                 value={filters.taxonomySubclass}
                 onChange={handleFilterChange}
             >
-              <option value="">Select Subclass</option>
+              <option value="">{t('ammoniteBrowse.selectSubclass')}</option>
               {options.subclasses.map(subclass => (
                   <option key={subclass} value={subclass}>{subclass}</option>
               ))}
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="taxonomyFamily">Family:</label>
+            <label htmlFor="taxonomyFamily">{t('entity.ammonite.family')}:</label>
             <select
                 name="taxonomyFamily"
                 id="taxonomyFamily"
@@ -169,14 +171,14 @@ function AmmoniteBrowse() {
                 value={filters.taxonomyFamily}
                 onChange={handleFilterChange}
             >
-              <option value="">Select Family</option>
+              <option value="">{t('ammoniteBrowse.selectFamily')}</option>
               {options.families.map(family => (
                   <option key={family} value={family}>{family}</option>
               ))}
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="taxonomySubfamily">Subfamily:</label>
+            <label htmlFor="taxonomySubfamily">{t('entity.ammonite.subfamily')}:</label>
             <select
                 name="taxonomySubfamily"
                 id="taxonomySubfamily"
@@ -184,14 +186,14 @@ function AmmoniteBrowse() {
                 value={filters.taxonomySubfamily}
                 onChange={handleFilterChange}
             >
-              <option value="">Select Subfamily</option>
+              <option value="">{t('ammoniteBrowse.selectSubfamily')}</option>
               {options.subfamilies.map(subfamily => (
                   <option key={subfamily} value={subfamily}>{subfamily}</option>
               ))}
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="taxonomyGenus">Genus:</label>
+            <label htmlFor="taxonomyGenus">{t('entity.ammonite.genus')}:</label>
             <select
                 name="taxonomyGenus"
                 id="taxonomyGenus"
@@ -199,14 +201,14 @@ function AmmoniteBrowse() {
                 value={filters.taxonomyGenus}
                 onChange={handleFilterChange}
             >
-              <option value="">Select Genus</option>
+              <option value="">{t('ammoniteBrowse.selectGenus')}</option>
               {options.genera.map(genus => (
                   <option key={genus} value={genus}>{genus}</option>
               ))}
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="taxonomySubgenus">Subgenus:</label>
+            <label htmlFor="taxonomySubgenus">{t('entity.ammonite.subgenus')}:</label>
             <select
                 name="taxonomySubgenus"
                 id="taxonomySubgenus"
@@ -214,14 +216,14 @@ function AmmoniteBrowse() {
                 value={filters.taxonomySubgenus}
                 onChange={handleFilterChange}
             >
-              <option value="">Select Subgenus</option>
+              <option value="">{t('ammoniteBrowse.selectSubgenus')}</option>
               {options.subgenera.map(subgenus => (
                   <option key={subgenus} value={subgenus}>{subgenus}</option>
               ))}
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="taxonomySpecies">Taxonomy Species:</label>
+            <label htmlFor="taxonomySpecies">{t('entity.ammonite.species')}:</label>
             <input
                 type="text"
                 name="taxonomySpecies"
@@ -232,7 +234,7 @@ function AmmoniteBrowse() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="strata">Strata:</label>
+            <label htmlFor="strata">{t('entity.ammonite.strata')}:</label>
             <input
                 type="text"
                 name="strata"
@@ -243,7 +245,7 @@ function AmmoniteBrowse() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description">Description:</label>
+            <label htmlFor="description">{t('entity.ammonite.description')}:</label>
             <input
                 type="text"
                 name="description"
@@ -254,7 +256,7 @@ function AmmoniteBrowse() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="comment">Comment:</label>
+            <label htmlFor="comment">{t('entity.ammonite.comment')}:</label>
             <input
                 type="text"
                 name="comment"
@@ -264,23 +266,23 @@ function AmmoniteBrowse() {
                 onChange={handleFilterChange}
             />
           </div>
-          <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+          <button className="btn btn-primary" onClick={handleSearch}>{t('ammoniteBrowse.search')}</button>
         </div>
         <div className="table-responsive d-none d-md-block">
           <table className="table table-striped table-bordered">
             <thead>
             <tr>
               <th></th>
-              <th>Subclass</th>
-              <th>Family</th>
-              <th>Subfamily</th>
-              <th>Genus</th>
-              <th>Subgenus</th>
-              <th>Species</th>
-              <th>Strata</th>
-              <th>Description</th>
-              <th>Comment</th>
-              <th>Image</th>
+              <th>{t('entity.ammonite.subclass')}</th>
+              <th>{t('entity.ammonite.family')}</th>
+              <th>{t('entity.ammonite.subfamily')}</th>
+              <th>{t('entity.ammonite.genus')}</th>
+              <th>{t('entity.ammonite.subgenus')}</th>
+              <th>{t('entity.ammonite.species')}</th>
+              <th>{t('entity.ammonite.strata')}</th>
+              <th>{t('entity.ammonite.description')}</th>
+              <th>{t('entity.ammonite.comment')}</th>
+              <th>{t('entity.ammonite.image')}</th>
             </tr>
             </thead>
             <tbody>
@@ -288,7 +290,7 @@ function AmmoniteBrowse() {
                 <tr key={item.id}>
                   <td>
                     <Link to={`/ammonite/${item.id}`}>
-                      <button className="btn btn-primary btn-sm">View</button>
+                      <button className="btn btn-primary btn-sm">{t('ammoniteBrowse.view')}</button>
                     </Link>
                   </td>
                   <td>{item.taxonomySubclass}</td>
