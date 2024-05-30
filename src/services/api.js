@@ -129,26 +129,15 @@ export const updateAmmoniteById = (id, editAmmonite) => {
     });
 };
 
-export const postImportAmmonites = (formData) => {
-  return client.post('/import/ammonites', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  })
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Error importing ammonites:', error);
-      throw error;
-    });
-};
-
-export const postImportAmmoniteMeasurements = (formData) => {
-  return client.post('/import/ammonite/measurements', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  })
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Error importing ammonite measurements:', error);
-      throw error;
-    });
+export const postImportFile = (formData) => {
+    return client.post('/import/file', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error importing file:', error);
+            throw error;
+        });
 };
 
 export const fetchImageById = (id) => {

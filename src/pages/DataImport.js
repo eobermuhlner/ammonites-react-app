@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postImportAmmonites, postImportAmmoniteMeasurements } from '../services/api';
+import { postImportFile } from '../services/api';
 import { useTranslation } from 'react-i18next';
 
 function DataImport() {
@@ -7,7 +7,6 @@ function DataImport() {
     const [imageFiles, setImageFiles] = useState([]);
     const [responseMessage, setResponseMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [importType, setImportType] = useState('ammonites'); // default to "ammonites"
     const { t } = useTranslation();
 
     const handleCsvFileChange = (event) => {
@@ -16,10 +15,6 @@ function DataImport() {
 
     const handleImageFilesChange = (event) => {
         setImageFiles(event.target.files);
-    };
-
-    const handleImportTypeChange = (event) => {
-        setImportType(event.target.value);
     };
 
     const handleSubmit = async (event) => {
@@ -32,14 +27,11 @@ function DataImport() {
 
         setResponseMessage('');
         setErrorMessage('');
-        if (importType === 'ammonites') {
-            postImportAmmonites(formData)
-                .then((response) => setResponseMessage(response.data))
-                .catch((error) => setErrorMessage(error.response ? error.response.data : error.message));
-        } else {
-            postImportAmmoniteMeasurements(formData)
-                .then((response) => setResponseMessage(response.data))
-                .catch((error) => setErrorMessage(error.response ? error.response.data : error.message));
+        try {
+            const response = await postImportFile(formData);
+            setResponseMessage(response);
+        } catch (error) {
+            setErrorMessage(error.response ? error.response.data : error.message);
         }
     };
 
@@ -66,13 +58,6 @@ function DataImport() {
                         onChange={handleImageFilesChange}
                         className="form-control"
                     />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="importType">{t('dataImport.importType')}</label>
-                    <select id="importType" value={importType} onChange={handleImportTypeChange} className="form-control">
-                        <option value="ammonites">{t('dataImport.ammonites')}</option>
-                        <option value="ammoniteMeasurements">{t('dataImport.ammoniteMeasurements')}</option>
-                    </select>
                 </div>
                 <button type="submit" className="btn btn-primary">{t('dataImport.uploadFiles')}</button>
             </form>
