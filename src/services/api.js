@@ -65,6 +65,14 @@ export const changeCurrentUserPassword = (password) => {
         });
 };
 
+export const confirmEmail = (token) => {
+    return client.get(`/users/confirm?token=${token}`)
+        .then(response => response.data)
+        .catch(error => {
+            throw error;
+        });
+};
+
 export const fetchAllAmmonites = () => {
   return client.get('/ammonites')
     .then(response => response.data)

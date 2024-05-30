@@ -8,6 +8,7 @@ import DataImport from './pages/DataImport';
 import UserList from './pages/UserList';
 import CreateUserForm from './pages/CreateUserForm';
 import EditUserForm from './pages/EditUserForm';
+import ConfirmEmail from './pages/ConfirmEmail';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
@@ -90,6 +91,10 @@ function App() {
                                     <EditUserForm />
                                 </PrivateRoute>
                             }
+                        />
+                        <Route
+                            path="/users/confirm"
+                            element={<ConfirmEmail />}
                         />
                         <Route
                             path="/ammonite/:id"

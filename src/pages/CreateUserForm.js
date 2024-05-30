@@ -42,7 +42,10 @@ const CreateUserForm = () => {
         const userData = { ...user, password };
         createUserSelfOnboarding(userData)
             .then(() => navigate('/login'))
-            .catch((err) => setError(t('createUserForm.errorCreateUser', { error: err })));
+            .catch((err) => {
+                const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
+                setError(t('createUserForm.errorCreateUser', { error: errorMessage }))
+            });
     };
 
     const handleCancel = () => {
