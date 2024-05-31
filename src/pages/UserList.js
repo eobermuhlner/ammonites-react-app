@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchAllUsers, deleteUserById } from '../services/api';
+import {fetchAllUsers, deleteUserById, extractErrorMessage} from '../services/api';
+import ErrorAlert from '../components/ErrorAlert';
 import { useTranslation } from 'react-i18next';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
+    const [error, setError] = useState('');
     const { t, ready } = useTranslation();
 
     useEffect(() => {
-        fetchAllUsers().then(setUsers).catch(console.error);
+        fetchAllUsers()
+            .then(setUsers)
+            .catch(error => {
+                setError(t('userList.errorFetchAllUsers', { error: extractErrorMessage(error) }))
+            });
     }, []);
 
     const handleDelete = (id) => {
         deleteUserById(id)
             .then(() => setUsers(users.filter(user => user.id !== id)))
-            .catch(console.error);
+            .catch(error => {
+                setError(t('userList.errorDeleteUser', { error: extractErrorMessage(error) }))
+            });
     };
 
     if (!ready) return <div>{t('loading')}</div>;
@@ -22,16 +30,17 @@ const UserList = () => {
     return (
         <div className="container mt-4">
             <h1 className="mb-4">{t('userList.title')}</h1>
+            <ErrorAlert error={error} />
             <Link to="/users/new" className="btn btn-primary mb-3">{t('userList.createUser')}</Link>
             <table className="table">
                 <thead>
                 <tr>
-                    <th>{t('userList.username')}</th>
-                    <th>{t('userList.email')}</th>
-                    <th>{t('userList.firstName')}</th>
-                    <th>{t('userList.lastName')}</th>
-                    <th>{t('userList.enabled')}</th>
-                    <th>{t('userList.roles')}</th>
+                    <th>{t('entity.user.username')}</th>
+                    <th>{t('entity.user.email')}</th>
+                    <th>{t('entity.user.firstName')}</th>
+                    <th>{t('entity.user.lastName')}</th>
+                    <th>{t('entity.user.enabled')}</th>
+                    <th>{t('entity.user.roles')}</th>
                     <th>{t('userList.actions')}</th>
                 </tr>
                 </thead>

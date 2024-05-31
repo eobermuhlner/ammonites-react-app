@@ -97,7 +97,7 @@ const EditUserForm = () => {
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">{t('editUserForm.username')}</label>
+                    <label className="form-label">{t('entity.user.username')}</label>
                     <input
                         type="text"
                         name="username"
@@ -108,7 +108,7 @@ const EditUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">{t('editUserForm.email')}</label>
+                    <label className="form-label">{t('entity.user.email')}</label>
                     <input
                         type="email"
                         name="email"
@@ -119,7 +119,7 @@ const EditUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">{t('editUserForm.firstName')}</label>
+                    <label className="form-label">{t('entity.user.firstName')}</label>
                     <input
                         type="text"
                         name="firstName"
@@ -130,7 +130,7 @@ const EditUserForm = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">{t('editUserForm.lastName')}</label>
+                    <label className="form-label">{t('entity.user.lastName')}</label>
                     <input
                         type="text"
                         name="lastName"
@@ -154,13 +154,13 @@ const EditUserForm = () => {
                             id="enabledCheck"
                         />
                         <label className="form-check-label" htmlFor="enabledCheck">
-                            {t('editUserForm.enabled')}
+                            {t('entity.user.enabled')}
                         </label>
                     </div>
                 )}
                 {!isCurrentUser && (
                     <div className="mb-3">
-                        <label className="form-label">{t('editUserForm.roles')}</label>
+                        <label className="form-label">{t('entity.user.roles')}</label>
                         <ul className="list-group mb-3">
                             {user.roles.map((role, index) => (
                                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center">

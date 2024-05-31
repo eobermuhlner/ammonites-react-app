@@ -1,8 +1,9 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ErrorAlert from '../components/ErrorAlert';
 
 function Login({ setIsAuthenticated }) {
     const [username, setUsername] = useState('');
@@ -43,7 +44,7 @@ function Login({ setIsAuthenticated }) {
                     <div className="card">
                         <div className="card-body">
                             <h2 className="card-title text-center">{t('login.title')}</h2>
-                            {error && <div className="alert alert-danger" role="alert">{error}</div>}
+                            <ErrorAlert error={error} />
                             <form onSubmit={handleLogin}>
                                 <div className="mb-3">
                                     <label htmlFor="username" className="form-label">Username:</label>
@@ -67,7 +68,7 @@ function Login({ setIsAuthenticated }) {
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100">Login</button>
                             </form>
-                            <button className="btn btn-secondary w-100 mt-3" onClick={() => navigate('/users/new')}>
+                            <button className="btn btn-secondary w-100 mt-3" onClick={() => navigate('/users/me/new')}>
                                 Create New User
                             </button>
                         </div>
