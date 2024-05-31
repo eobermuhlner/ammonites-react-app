@@ -288,3 +288,15 @@ export const fetchAllRoles = () => {
             throw error;
         });
 };
+
+export const extractErrorMessage = (error) => {
+    let errorMessage = 'An unexpected error occurred';
+
+    if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+    } else if (error.message) {
+        errorMessage = error.message;
+    }
+
+    return errorMessage;
+}
