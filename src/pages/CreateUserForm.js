@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUserSelfOnboarding } from '../services/api';
 import { useTranslation } from 'react-i18next';
 
-const CreateUserForm = () => {
+const CreateUserForm = ({ isAdmin }) => {
     const [user, setUser] = useState({
         username: '',
         email: '',
@@ -41,12 +41,22 @@ const CreateUserForm = () => {
 
         const userData = { ...user, password };
         createUserSelfOnboarding(userData)
-            .then(() => navigate('/login'))
+            .then(() => {
+                if (isAdmin) {
+                    navigate('/users');
+                } else {
+                    navigate('/login');
+                }
+            })
             .catch((err) => setError(t('createUserForm.errorCreateUser', { error: err })));
     };
 
     const handleCancel = () => {
-        navigate('/login');
+        if (isAdmin) {
+            navigate('/users');
+        } else {
+            navigate('/login');
+        }
     };
 
     return (

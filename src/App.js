@@ -77,7 +77,11 @@ function App() {
                         />
                         <Route
                             path="/users/new"
-                            element={<CreateUserForm />}
+                            element={<CreateUserForm isAdmin={true} />}
+                        />
+                        <Route
+                            path="/users/me/new"
+                            element={<CreateUserForm isAdmin={false} />}
                         />
                         <Route
                             path="/users/me"
