@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { postImportFile } from '../services/api';
 import { useTranslation } from 'react-i18next';
+import { postImportFile, extractErrorMessage } from '../services/api';
 import ErrorAlert from '../components/ErrorAlert';
 
 function DataImport() {
@@ -32,7 +32,7 @@ function DataImport() {
             const response = await postImportFile(formData);
             setResponseMessage(response);
         } catch (error) {
-            setError(error.response ? error.response.data : error.message);
+            setError(t('dataImport.errorImportFailed', { error: extractErrorMessage(error) }))
         }
     };
 

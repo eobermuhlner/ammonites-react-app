@@ -306,7 +306,7 @@ export const fetchAllRoles = () => {
 };
 
 export const extractErrorMessage = (error) => {
-    let errorMessage = 'An unexpected error occurred';
+    let errorMessage = '';
 
     if (error.response && error.response.data && error.response.data.message) {
         errorMessage = error.response.data.message;
