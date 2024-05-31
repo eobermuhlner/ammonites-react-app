@@ -22,6 +22,22 @@ client.interceptors.request.use(
     }
 );
 
+export const loginUser = (username, password) => {
+    return axios.create({
+        baseURL: API_BASE_URL,
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        }).post('/login', {
+            username,
+            password
+        })
+        .then(response => response.data)
+        .catch(error => {
+            throw error;
+        });
+};
+
 export const fetchUserRoles = () => {
     return client.get('/users/roles')
         .then(response => response.data)

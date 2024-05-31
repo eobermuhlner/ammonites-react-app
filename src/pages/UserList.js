@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {fetchAllUsers, deleteUserById, extractErrorMessage} from '../services/api';
 import ErrorAlert from '../components/ErrorAlert';
-import { useTranslation } from 'react-i18next';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);

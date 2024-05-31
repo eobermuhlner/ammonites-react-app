@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { fetchUserById, fetchCurrentUser, updateUserById, updateCurrentUser, changeUserPassword, changeCurrentUserPassword, addUserRole, removeUserRole, fetchAllRoles } from '../services/api';
 import ChangePasswordModal from '../components/ChangePasswordModal';
-import { useTranslation } from 'react-i18next';
+import ErrorAlert from '../components/ErrorAlert';
 
 const EditUserForm = () => {
     const [user, setUser] = useState({
@@ -94,7 +95,7 @@ const EditUserForm = () => {
     return (
         <div className="container mt-5">
             <h1>{t('editUserForm.title')}</h1>
-            {error && <div className="alert alert-danger">{error}</div>}
+            <ErrorAlert error={error} />
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">{t('entity.user.username')}</label>

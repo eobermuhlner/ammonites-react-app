@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { postImportFile } from '../services/api';
 import { useTranslation } from 'react-i18next';
+import ErrorAlert from '../components/ErrorAlert';
 
 function DataImport() {
     const [csvFile, setCsvFile] = useState(null);
     const [imageFiles, setImageFiles] = useState([]);
     const [responseMessage, setResponseMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [error, setError] = useState('');
     const { t } = useTranslation();
 
     const handleCsvFileChange = (event) => {
@@ -26,17 +27,19 @@ function DataImport() {
         }
 
         setResponseMessage('');
-        setErrorMessage('');
+        setError('');
         try {
             const response = await postImportFile(formData);
             setResponseMessage(response);
         } catch (error) {
-            setErrorMessage(error.response ? error.response.data : error.message);
+            setError(error.response ? error.response.data : error.message);
         }
     };
 
     return (
         <div className="container">
+            <h1>{t('dataImport.title')}</h1>
+            <ErrorAlert error={error} />
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="csvFile">{t('dataImport.csvFile')}</label>
@@ -62,7 +65,6 @@ function DataImport() {
                 <button type="submit" className="btn btn-primary">{t('dataImport.uploadFiles')}</button>
             </form>
             {responseMessage && <pre className="alert alert-success mt-3">{responseMessage}</pre>}
-            {errorMessage && <pre className="alert alert-danger mt-3">{errorMessage}</pre>}
         </div>
     );
 }

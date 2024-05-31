@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { loginUser } from '../services/api';
 import ErrorAlert from '../components/ErrorAlert';
 
 function Login({ setIsAuthenticated }) {
@@ -14,25 +13,15 @@ function Login({ setIsAuthenticated }) {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:8080/login', {
-                username,
-                password,
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+        loginUser(username, password)
+            .then(data => {
+                localStorage.setItem('token', data.token);
+                setIsAuthenticated(true);
+                navigate('/browse');
+            }).catch(error => {
+                console.error('Login failed', error);
+                setError(t('login.error_message'));
             });
-            // Handle successful login
-            console.log('Login successful', response.data);
-            localStorage.setItem('token', response.data.token);
-            setIsAuthenticated(true);
-            navigate('/browse');
-        } catch (error) {
-            // Handle login error
-            console.error('Login failed', error);
-            setError('Login failed. Please check your username and password.');
-        }
     };
 
     if (!ready) return <div>Loading...</div>;
